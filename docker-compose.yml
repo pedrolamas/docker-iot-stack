@@ -1,0 +1,135 @@
+version: '3.7'
+
+services:
+  cloudflared:
+    image: visibilityspots/cloudflared:arm64
+    restart: unless-stopped
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.2
+
+  pihole:
+    depends_on:
+      - cloudflared
+    image: pihole/pihole:latest
+    restart: unless-stopped
+    hostname: pihole
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.3
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "80:80"
+    volumes:
+      - "./pihole/etc-pihole/:/etc/pihole/"
+      - "./pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/"
+    environment:
+      - DNS1=10.0.0.2#5054
+      - DNS2=no
+      - IPv6=false
+      - TZ=Europe/London
+      - DNSMASQ_LISTENING=all
+      - WEBPASSWORD=admin
+      - VIRTUAL_HOST=nanopineo2.local.maialamas.com
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    extra_hosts:
+      - "gateway:192.168.40.1"
+      - "docker:10.0.0.1"
+      - "cloudflared:10.0.0.2"
+      - "nginx:10.0.0.4"
+      - "home-assistant:10.0.0.5"
+      - "node-red:10.0.0.6"
+      - "mosquitto:10.0.0.7"
+      - "zigbee2mqtt:10.0.0.8"
+
+  nginx:
+    depends_on:
+      - pihole
+      - homeassistant
+      - nodered
+    image: arm64v8/nginx:latest
+    restart: unless-stopped
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.4
+    ports:
+      - "443:443"
+    volumes:
+      - "./nginx/etc-nginx/nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "./nginx/etc-nginx/proxy.conf:/etc/nginx/proxy.conf:ro"
+      - "./nginx/etc-nginx-certs:/etc/nginx/certs"
+    dns: 10.0.0.3
+
+  homeassistant:
+    depends_on:
+      - mosquitto
+    image: homeassistant/aarch64-homeassistant:latest
+    restart: unless-stopped
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.5
+    ports:
+      - "8123:8123"
+    volumes:
+      - "./homeassistant/config:/config"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    dns: 10.0.0.3
+
+  nodered:
+    depends_on:
+      - pihole
+    build:
+      context: ./nodered/docker-build
+      network: host
+    restart: unless-stopped
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.6
+    ports:
+      - "1880:1880"
+    volumes:
+      - "./nodered/data:/data"
+    dns: 10.0.0.3
+  
+  mosquitto:
+    depends_on:
+      - pihole
+    image: arm64v8/eclipse-mosquitto
+    restart: unless-stopped
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.7
+#    volumes:
+#      - "./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro"
+#      - "./mosquitto/config/password_file:/mosquitto/config/password_file"
+#      - "./mosquitto/config/acl_file:/mosquitto/config/acl_file"
+    dns: 10.0.0.3
+
+  zigbee2mqtt:
+    depends_on:
+      - mosquitto
+    image: koenkk/zigbee2mqtt:arm64v8
+    restart: unless-stopped
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.8
+    volumes:
+      - "./zigbee2mqtt/data:/app/data"
+      - "./zigbee2mqtt/zigbee-shepherd-converters:/app/node_modules/zigbee-shepherd-converters"
+      - "./zigbee2mqtt/homeassistant-extension/homeassistant.js:/app/node_modules/lib/extension/homeassistant.js"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    devices:
+       - "/dev/ttyACM0:/dev/ttyACM0"
+    dns: 10.0.0.3
+
+networks:
+  backbone:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/28

@@ -1,0 +1,6 @@
+[submodule "zigbee2mqtt/zigbee-shepherd-converters"]
+	path = zigbee2mqtt/zigbee-shepherd-converters
+	url = https://github.com/Koenkk/zigbee-shepherd-converters.git
+[submodule "homeassistant"]
+	path = homeassistant
+	url = https://github.com/PedroLamas/home-assistant-config.git
