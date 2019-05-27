@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+	"peterjausovec.vscode-docker",
+	"editorconfig.editorconfig",
+    "keesschollaart.vscode-home-assistant",
+    "lukas-tr.materialdesignicons-intellisense",
+    "redhat.vscode-yaml"
+  ]
+}
