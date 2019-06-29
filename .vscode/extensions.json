@@ -1,6 +1,6 @@
 {
   "recommendations": [
-    "peterjausovec.vscode-docker",
+    "ms-azuretools.vscode-docker",
     "editorconfig.editorconfig",
     "keesschollaart.vscode-home-assistant",
     "lukas-tr.materialdesignicons-intellisense",
