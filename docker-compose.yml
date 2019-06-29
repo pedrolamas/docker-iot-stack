@@ -127,6 +127,18 @@ services:
        - "/dev/ttyACM0:/dev/ttyACM0"
     dns: 10.0.0.3
 
+  portainer:
+    image: portainer/portainer
+    restart: unless-stopped
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.9
+    ports:
+      - "9000:9000"
+    volumes:
+      - "./portainer/data:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
 networks:
   backbone:
     driver: bridge
