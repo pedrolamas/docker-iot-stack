@@ -8,4 +8,5 @@ serial:
 advanced:
   channel: 20
   log_level: warn
+  log_directory: /tmp/zigbee2mqtt_%TIMESTAMP%
 devices:
