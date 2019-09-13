@@ -7,6 +7,9 @@ services:
     networks:
       backbone:
         ipv4_address: 10.0.0.2
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
 
   pihole:
     depends_on:
@@ -44,6 +47,7 @@ services:
       - "node-red:10.0.0.6"
       - "mosquitto:10.0.0.7"
       - "zigbee2mqtt:10.0.0.8"
+      - "portainer:10.0.0.9"
 
   nginx:
     depends_on:
@@ -66,7 +70,7 @@ services:
   homeassistant:
     depends_on:
       - mosquitto
-    image: homeassistant/aarch64-homeassistant:latest
+    image: homeassistant/aarch64-homeassistant:stable
     restart: unless-stopped
     networks:
       backbone:
@@ -77,6 +81,8 @@ services:
       - "./homeassistant/config:/config"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
+    environment:
+      - PYTHONWARNINGS=ignore:Unverified HTTPS request
     dns: 10.0.0.3
 
   nodered:
@@ -103,6 +109,9 @@ services:
     networks:
       backbone:
         ipv4_address: 10.0.0.7
+    ports:
+      - "1883:1883"
+      - "9001:9001"
 #    volumes:
 #      - "./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro"
 #      - "./mosquitto/config/password_file:/mosquitto/config/password_file"
