@@ -88,9 +88,7 @@ services:
   nodered:
     depends_on:
       - pihole
-    build:
-      context: ./nodered/docker-build
-      network: host
+    image: nodered/node-red:latest
     restart: unless-stopped
     networks:
       backbone:
