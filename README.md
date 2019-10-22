@@ -40,12 +40,13 @@ Nginx (pronounced "engine-x") is an open source reverse proxy server for HTTP, H
 Home Assistant is an open source home automation tool that puts local control and privacy first.
 
 * Image: [homeassistant/aarch64-homeassistant](https://hub.docker.com/r/homeassistant/aarch64-homeassistant)
+* Tag: stable
 
 ### Node-RED
 
 Node-RED is a programming tool for wiring together hardware devices, APIs and online services in new and interesting ways.
 
-* Image: (local build)
+* Image: [nodered/node-red](https://hub.docker.com/r/nodered/node-red)
 
 ### Eclipse Mosquitto
 
