@@ -95,6 +95,26 @@ const configurations = {
             device_class: 'battery',
         },
     },
+    'binary_sensor_lock': {
+        type: 'binary_sensor',
+        object_id: 'lock',
+        discovery_payload: {
+            payload_on: 'UNLOCK',
+            payload_off: 'LOCK',
+            value_template: '{{ value_json.state}}',
+            device_class: 'lock',
+        },
+    },
+    'binary_sensor_lock_reverse': {
+        type: 'binary_sensor',
+        object_id: 'lock_reverse',
+        discovery_payload: {
+            payload_on: 'UNLOCK',
+            payload_off: 'LOCK',
+            value_template: '{{ value_json.reverse}}',
+            device_class: 'lock',
+        },
+    },
 
     // Sensor
     'sensor_illuminance': {
@@ -145,9 +165,27 @@ const configurations = {
         type: 'sensor',
         object_id: 'power',
         discovery_payload: {
-            unit_of_measurement: 'Watt',
-            icon: 'mdi:flash',
+            unit_of_measurement: 'W',
+            icon: 'mdi:factory',
             value_template: '{{ value_json.power }}',
+        },
+    },
+    'sensor_current': {
+        type: 'sensor',
+        object_id: 'current',
+        discovery_payload: {
+            unit_of_measurement: 'A',
+            icon: 'mdi:power-plug',
+            value_template: '{{ value_json.current }}',
+        },
+    },
+    'sensor_voltage': {
+        type: 'sensor',
+        object_id: 'voltage',
+        discovery_payload: {
+            unit_of_measurement: 'V',
+            icon: 'mdi:flash',
+            value_template: '{{ value_json.voltage }}',
         },
     },
     'sensor_action': {
@@ -284,6 +322,21 @@ const configurations = {
             state_topic: false,
         },
     },
+    'cover_position_tilt': {
+        type: 'cover',
+        object_id: 'cover',
+        discovery_payload: {
+            state_topic: false,
+            command_topic: true,
+            set_position_topic: true,
+            set_position_template: '{ "position": {{ position }} }',
+            tilt_command_topic: true,
+            position_topic: true,
+            value_template: '{{ value_json.position }}',
+            tilt_status_topic: true,
+            tilt_status_template: '{{ value_json.tilt }}',
+        },
+    },
 
     // Lock
     'lock': {
@@ -300,6 +353,7 @@ const configurations = {
         type: 'climate',
         object_id: 'climate',
         discovery_payload: {
+            state_topic: false,
             min_temp: 7,
             max_temp: 30,
             modes: ['off', 'auto', 'heat'],
@@ -349,11 +403,15 @@ const switchWithPostfix = (postfix) => {
 const mapping = {
     'WXKG01LM': [configurations.sensor_click, configurations.sensor_battery],
     'WXKG11LM': [configurations.sensor_click, configurations.sensor_battery],
-    'WXKG12LM': [configurations.sensor_click, configurations.sensor_battery],
-    'WXKG03LM': [configurations.sensor_click, configurations.sensor_battery],
+    'WXKG12LM': [configurations.sensor_click, configurations.sensor_battery, configurations.sensor_action],
+    // BREAKING_IMPROVEMENT: only use sensor_click for WXKG03LM (action hold -> click hold)
+    'WXKG03LM': [configurations.sensor_click, configurations.sensor_battery, configurations.sensor_action],
     'WXKG02LM': [configurations.sensor_click, configurations.sensor_battery],
-    'QBKG04LM': [configurations.switch, configurations.sensor_click],
-    'QBKG03LM': [switchWithPostfix('left'), switchWithPostfix('right'), configurations.sensor_click],
+    'QBKG04LM': [configurations.switch, configurations.sensor_click, configurations.sensor_action],
+    'QBKG03LM': [
+        switchWithPostfix('left'), switchWithPostfix('right'), configurations.sensor_click,
+        configurations.sensor_temperature,
+    ],
     'WSDCGQ01LM': [configurations.sensor_temperature, configurations.sensor_humidity, configurations.sensor_battery],
     'WSDCGQ11LM': [
         configurations.sensor_temperature, configurations.sensor_humidity, configurations.sensor_pressure,
@@ -395,6 +453,7 @@ const mapping = {
     'BY 185 C': [configurations.light_brightness_colortemp_colorxy],
     '9290012573A': [configurations.light_brightness_colortemp_colorxy],
     'LED1624G9': [configurations.light_brightness_colorxy],
+    'LED1837R5': [configurations.light_brightness],
     '73742': [configurations.light_brightness_colortemp],
     '73740': [configurations.light_brightness_colortemp],
     '73739': [configurations.light_brightness_colortemp_colorxy],
@@ -415,6 +474,7 @@ const mapping = {
     'RS 125': [configurations.light_brightness],
     'RS 225': [configurations.light_brightness],
     'RB 145': [configurations.light_brightness],
+    'RB 245': [configurations.light_brightness],
     'PL 110': [configurations.light_brightness],
     'ST 110': [configurations.light_brightness],
     'UC 110': [configurations.light_brightness],
@@ -455,6 +515,7 @@ const mapping = {
     'FB56+ZSW05HG1.2': [configurations.switch],
     '72922-A': [configurations.switch],
     'AC03642': [configurations.light_brightness_colortemp],
+    'AC08560': [configurations.light_brightness],
     'DNCKATSW002': [switchWithPostfix('left'), switchWithPostfix('right')],
     'DNCKATSW003': [switchWithPostfix('left'), switchWithPostfix('right'), switchWithPostfix('center')],
     'DNCKATSW004': [
@@ -464,6 +525,7 @@ const mapping = {
     'BY 165': [configurations.light_brightness],
     'ZLED-2709': [configurations.light_brightness],
     '8718696548738': [configurations.light_brightness_colortemp],
+    '915005587401': [configurations.light_brightness_colortemp],
     '4052899926110': [configurations.light_brightness_colortemp_colorxy],
     'Z01-CIA19NAE26': [configurations.light_brightness],
     'E11-N1EA': [configurations.light_brightness_colortemp_colorxy],
@@ -485,7 +547,7 @@ const mapping = {
     '3261030P7': [configurations.light_brightness_colortemp],
     '3216431P5': [configurations.light_brightness_colortemp],
     'DJT11LM': [configurations.sensor_action, configurations.sensor_battery],
-    'E1603': [configurations.switch],
+    'E1603/E1702': [configurations.switch],
     '7199960PH': [configurations.light_brightness_colorxy],
     '74696': [configurations.light_brightness],
     'AB35996': [configurations.light_brightness_colortemp_colorxy],
@@ -512,19 +574,22 @@ const mapping = {
     'PSS-23ZBS': [configurations.switch],
     'HS1SA': [configurations.binary_sensor_smoke, configurations.binary_sensor_battery_low],
     'Z01-A19NAE26': [configurations.light_brightness_colortemp],
-    'AC01353010G': [configurations.binary_sensor_occupancy, configurations.sensor_temperature],
+    'Z01-A60EAE27': [configurations.light_brightness_colortemp],
+    'AC01353010G': [
+        configurations.binary_sensor_occupancy, configurations.sensor_temperature,
+        configurations.binary_sensor_battery_low,
+    ],
     'SP 120': [configurations.switch, configurations.sensor_power],
     'RB 248 T': [configurations.light_brightness_colortemp],
     'HS3SA': [configurations.binary_sensor_smoke, configurations.binary_sensor_battery_low],
-    'HS1DS': [configurations.binary_sensor_contact],
-    'HS1WL': [configurations.binary_sensor_water_leak],
+    'HS1DS/HS3DS': [configurations.binary_sensor_contact],
+    'HS1WL/HS3WL': [configurations.binary_sensor_water_leak],
     'HS1-WL-E': [configurations.binary_sensor_water_leak],
     '421786': [configurations.light_brightness],
     'ICZB-IW11D': [configurations.light_brightness],
-    'HGZB-01A': [configurations.light_brightness],
     '3321-S': [configurations.binary_sensor_contact, configurations.sensor_temperature],
     'ZPIR-8000': [configurations.binary_sensor_occupancy],
-    'ZCTS-808': [configurations.binary_sensor_contact],
+    'ZCTS-808': [configurations.binary_sensor_contact, configurations.sensor_battery],
     'ZNLDP12LM': [configurations.light_brightness_colortemp],
     'D1821': [configurations.light_brightness_colortemp_colorxy],
     'ZNCLDJ11LM': [configurations.cover_position, configurations.sensor_cover],
@@ -549,10 +614,10 @@ const mapping = {
     'D1532': [configurations.light_brightness],
     'AV2010/32': [],
     'HGZB-07A': [configurations.light_brightness_colortemp_colorxy],
-    'E1524': [configurations.sensor_action],
+    'E1524/E1810': [configurations.sensor_action, configurations.sensor_battery],
     'GL-C-006/GL-C-009': [configurations.light_brightness_colortemp],
     '100.424.11': [configurations.light_brightness_colortemp],
-    'AC0251100NJ': [configurations.sensor_click, configurations.sensor_brightness, configurations.sensor_battery],
+    'AC0251100NJ': [configurations.sensor_action, configurations.sensor_battery],
     '71831': [configurations.light_brightness_colortemp],
     '404000/404005/404012': [configurations.light_brightness_colortemp_colorxy],
     '404006/404008/404004': [configurations.light_brightness_colortemp],
@@ -580,15 +645,21 @@ const mapping = {
     'YRD426NRSC': [configurations.lock, configurations.sensor_battery],
     'E1743': [configurations.sensor_click, configurations.sensor_battery],
     'LED1732G11': [configurations.light_brightness_colortemp],
+    'LED1736G9': [configurations.light_brightness_colortemp],
     'RB 265': [configurations.light_brightness],
     '9290019758': [
         configurations.binary_sensor_occupancy, configurations.sensor_temperature,
         configurations.sensor_illuminance, configurations.sensor_battery,
     ],
     'HGZB-042': [switchWithPostfix('top'), switchWithPostfix('bottom')],
+    'HGZB-42': [switchWithPostfix('top'), switchWithPostfix('bottom')],
     'GL-FL-004TZ': [configurations.light_brightness_colortemp_colorxy],
     'IM6001-OTP05': [configurations.switch],
     'SV01': [
+        configurations.cover_position, configurations.sensor_temperature, configurations.sensor_pressure,
+        configurations.sensor_battery,
+    ],
+    'SV02': [
         configurations.cover_position, configurations.sensor_temperature, configurations.sensor_pressure,
         configurations.sensor_battery,
     ],
@@ -606,9 +677,16 @@ const mapping = {
     ],
     '9290018195': [configurations.light_brightness],
     'HGZB-04D': [configurations.light_brightness],
-    'HGZB-02A': [configurations.light_brightness],
     'HGZB-043': [switchWithPostfix('top'), switchWithPostfix('bottom'), switchWithPostfix('center')],
     'NCZ-3043-HA': [
+        configurations.binary_sensor_occupancy, configurations.sensor_temperature,
+        configurations.sensor_battery, configurations.binary_sensor_battery_low,
+    ],
+    'NCZ-3041-HA': [
+        configurations.binary_sensor_occupancy, configurations.sensor_temperature,
+        configurations.sensor_battery, configurations.binary_sensor_battery_low,
+    ],
+    'NCZ-3045-HA': [
         configurations.binary_sensor_occupancy, configurations.sensor_temperature,
         configurations.sensor_battery, configurations.binary_sensor_battery_low,
     ],
@@ -626,7 +704,10 @@ const mapping = {
     ],
     'IM6001-BTP01': [configurations.sensor_click, configurations.sensor_temperature],
     'AV2010/34': [configurations.sensor_click],
-    'PP-WHT-US': [configurations.switch, configurations.sensor_power],
+    'PP-WHT-US': [
+        configurations.switch, configurations.sensor_power,
+        configurations.sensor_current, configurations.sensor_voltage,
+    ],
     'CR701-YZ': [
         configurations.binary_sensor_battery_low, configurations.binary_sensor_carbon_monoxide,
         configurations.binary_sensor_gas,
@@ -634,9 +715,14 @@ const mapping = {
     'HGZB-1S': [configurations.switch, configurations.sensor_click],
     'HGZB-045': [configurations.switch, configurations.sensor_click],
     'HGZB-43': [switchWithPostfix('top'), switchWithPostfix('bottom'), switchWithPostfix('center')],
-    'HGZB-01A/02A': [configurations.switch],
+    'HGZB-01A': [configurations.switch],
+    'HGZB-02A': [configurations.light_brightness],
     'MCT-350 SMA': [configurations.binary_sensor_contact],
     '3310-S': [configurations.sensor_temperature, configurations.sensor_battery],
+    'IM6001-WLP01': [
+        configurations.sensor_temperature, configurations.binary_sensor_water_leak,
+        configurations.sensor_battery,
+    ],
     '3315-S': [
         configurations.sensor_temperature, configurations.binary_sensor_water_leak,
         configurations.sensor_battery,
@@ -664,9 +750,10 @@ const mapping = {
     'LLKZMK11LM': [switchWithPostfix('l1'), switchWithPostfix('l2')],
     'LVS-SM10ZW': [configurations.binary_sensor_contact, configurations.binary_sensor_battery_low],
     'HS2SK': [configurations.switch, configurations.sensor_power],
-    '45853GE': [configurations.switch],
+    '45853GE': [configurations.switch, configurations.sensor_power],
     '50064': [configurations.light_brightness_colortemp],
     '9290011998B': [configurations.light_brightness_colortemp],
+    '9290022167': [configurations.light_brightness_colortemp],
     '4096730U7': [configurations.light_brightness_colortemp],
     'RB 278 T': [configurations.light_brightness],
     '3315-G': [
@@ -692,6 +779,120 @@ const mapping = {
     '2430-100': [configurations.sensor_action],
     '100.425.90': [configurations.switch],
     '74580': [configurations.light_brightness],
+    'HS1CA-E': [
+        configurations.binary_sensor_carbon_monoxide, configurations.binary_sensor_battery_low,
+        configurations.sensor_battery,
+    ],
+    'MCT-340 E': [configurations.binary_sensor_contact],
+    'D1542': [configurations.light_brightness_colortemp],
+    'ZGRC-KEY-013': [configurations.sensor_click],
+    'ZigUP': [configurations.switch],
+    'YRD256HA20BP': [configurations.sensor_battery, configurations.lock],
+    'SZ-ESW01-AU': [configurations.sensor_power, configurations.switch],
+    'PSM-29ZBSR': [configurations.switch],
+    'ZM350STW1TCF': [configurations.light_brightness_colortemp],
+    'M350STW1': [configurations.light_brightness],
+    'A806S-Q1R': [configurations.light_brightness],
+    'XY12S-15': [configurations.light_brightness_colortemp_colorxy],
+    'B07KG5KF5R': [configurations.light_brightness_colortemp],
+    'SCM-S1': [configurations.cover_position],
+    'HEIMAN-M1': [configurations.binary_sensor_contact],
+    '3216131P5': [configurations.light_brightness_colortemp],
+    'ST8AU-CON': [configurations.light_brightness],
+    'HS3MS': [configurations.binary_sensor_occupancy],
+    'DIYRUZ_R4_5': [
+        switchWithPostfix('bottom_left'), switchWithPostfix('bottom_right'), switchWithPostfix('center'),
+        switchWithPostfix('top_left'), switchWithPostfix('top_right'),
+    ],
+    'NCZ-3011-HA': [
+        configurations.binary_sensor_occupancy, configurations.sensor_humidity, configurations.sensor_temperature,
+    ],
+    'MEAZON_BIZY_PLUG': [configurations.sensor_power, configurations.switch, configurations.sensor_temperature],
+    'MEAZON_DINRAIL': [configurations.sensor_power, configurations.switch, configurations.sensor_temperature],
+    'HS1CA-M': [configurations.binary_sensor_carbon_monoxide, configurations.binary_sensor_battery_low],
+    '7099860PH': [configurations.light_brightness_colorxy],
+    'HV-GSCXZB269': [configurations.light_brightness_colortemp],
+    '3216231P5': [configurations.light_brightness_colortemp],
+    'AC03647': [configurations.light_brightness_colortemp_colorxy],
+    '12031': [configurations.cover_position],
+    '421792': [configurations.light_brightness_colortemp_colorxy],
+    'HGZB-06A': [configurations.light_brightness_colortemp_colorxy],
+    'LED1733G7': [configurations.light_brightness_colortemp],
+    '9290011370B': [configurations.light_brightness],
+    'RB 250 C': [configurations.light_brightness_colortemp_colorxy],
+    '8718696170625': [configurations.light_brightness],
+    'GL-G-001Z': [configurations.light_brightness_colortemp_colorxy],
+    'HV-GSCXZB279_HV-GSCXZB229': [configurations.light_brightness_colortemp],
+    'HS2WD-E': [configurations.sensor_battery],
+    'ZNMS12LM': [
+        configurations.sensor_action, configurations.binary_sensor_lock, configurations.binary_sensor_lock_reverse,
+    ],
+    'ZNMS13LM': [
+        configurations.sensor_action, configurations.binary_sensor_lock, configurations.binary_sensor_lock_reverse,
+    ],
+    '12050': [configurations.switch, configurations.sensor_power],
+    'ROB_200-004-0': [configurations.light_brightness],
+    'RH3040': [configurations.sensor_battery, configurations.binary_sensor_occupancy],
+    'DZ4743-00B': [configurations.switch],
+    'GLSK3ZB-1711': [configurations.switch],
+    'GLSK3ZB-1712': [switchWithPostfix('top'), switchWithPostfix('bottom')],
+    'GLSK3ZB-1713': [switchWithPostfix('top'), switchWithPostfix('center'), switchWithPostfix('bottom')],
+    'GLSK6ZB-1714': [
+        switchWithPostfix('top_left'), switchWithPostfix('bottom_left'),
+        switchWithPostfix('top_right'), switchWithPostfix('bottom_right'),
+    ],
+    'GLSK6ZB-1715': [
+        switchWithPostfix('top_left'), switchWithPostfix('center_left'), switchWithPostfix('bottom_left'),
+        switchWithPostfix('top_right'), switchWithPostfix('bottom_right'),
+    ],
+    'GLSK6ZB-1716': [
+        switchWithPostfix('top_left'), switchWithPostfix('center_left'), switchWithPostfix('bottom_left'),
+        switchWithPostfix('top_right'), switchWithPostfix('center_right'), switchWithPostfix('bottom_right'),
+    ],
+    '3306431P7': [configurations.light_brightness_colortemp],
+    'AC08559': [configurations.light_brightness_colortemp],
+    'LVS-ZB15S': [configurations.switch],
+    'LZL4BWHL01': [configurations.sensor_action],
+    '2AJZ4KPKEY': [configurations.sensor_click, configurations.sensor_battery],
+    '2AJZ4KPFT': [configurations.sensor_temperature, configurations.sensor_humidity, configurations.sensor_battery],
+    'TT001ZAV20': [configurations.sensor_temperature, configurations.sensor_humidity, configurations.sensor_battery],
+    'ZM-CSW002-D': [switchWithPostfix('l1'), switchWithPostfix('l2'), configurations.sensor_power],
+    'LVS-SN10ZW': [configurations.sensor_battery, configurations.binary_sensor_occupancy],
+    'LVS-ZB15R': [configurations.switch],
+    'TH1123ZB': [configurations.thermostat],
+    'Zen-01-W': [configurations.thermostat],
+    '9290022166': [configurations.light_brightness_colortemp_colorxy],
+    'PM-C140-ZB': [configurations.sensor_power, configurations.switch],
+    'ptvo.switch': [
+        switchWithPostfix('bottom_left'), switchWithPostfix('bottom_right'), switchWithPostfix('top_left'),
+        switchWithPostfix('top_right'), switchWithPostfix('center'),
+    ],
+    'DIYRuZ_R4_5': [
+        switchWithPostfix('bottom_left'), switchWithPostfix('bottom_right'), switchWithPostfix('top_left'),
+        switchWithPostfix('top_right'), switchWithPostfix('center'),
+    ],
+    'DIYRuZ_KEYPAD20': [],
+    'DTB190502A1': [],
+    'RF 263': [configurations.light_brightness],
+    'F-WTR-UK-V2': [
+        configurations.sensor_temperature, configurations.binary_sensor_water_leak, configurations.sensor_battery,
+    ],
+    'HS1CG-M': [configurations.binary_sensor_gas],
+    'LVS-SN10ZW_SN11': [configurations.sensor_battery, configurations.binary_sensor_occupancy],
+    'B00TN589ZG': [configurations.light_brightness],
+    'PSB19-SW27': [configurations.light_brightness],
+    'S1': [configurations.switch],
+    'S2': [switchWithPostfix('l1'), switchWithPostfix('l2')],
+    'D1': [configurations.light_brightness],
+    'J1': [configurations.cover_position_tilt],
+    '73741': [configurations.light_brightness_colortemp_colorxy],
+    'ZA806SQ1TCF': [configurations.light_brightness_colortemp],
+    'RF 265': [configurations.light_brightness],
+    'ZNCZ03LM': [configurations.switch, configurations.sensor_power],
+    '17436/30/P7': [configurations.light_brightness],
+    '9290018187B': [configurations.light_brightness_colortemp_colorxy],
+    '1741830P7': [configurations.light_brightness_colortemp_colorxy],
+    'Z3-1BRL': [configurations.sensor_action, configurations.sensor_brightness],
 };
 
 Object.keys(mapping).forEach((key) => {
@@ -721,10 +922,11 @@ class HomeAssistant {
         }
 
         this.discoveryTopic = settings.get().advanced.homeassistant_discovery_topic;
+        this.statusTopic = settings.get().advanced.homeassistant_status_topic;
     }
 
     onMQTTConnected() {
-        this.mqtt.subscribe('hass/status');
+        this.mqtt.subscribe(this.statusTopic);
 
         // MQTT discovery of all paired devices on startup.
         this.zigbee.getAllClients().forEach((device) => {
@@ -764,6 +966,10 @@ class HomeAssistant {
                 payload.position_topic = stateTopic;
             }
 
+            if (payload.tilt_status_topic) {
+                payload.tilt_status_topic = stateTopic;
+            }
+
             // Set json_attributes_topic for types which support this
             // https://github.com/Koenkk/zigbee2mqtt/issues/840
             if (['binary_sensor', 'sensor', 'lock', 'climate', 'fan'].includes(config.type)) {
@@ -778,7 +984,7 @@ class HomeAssistant {
 
             // Attributes for device registry
             payload.device = {
-                identifiers: `zigbee2mqtt_${entityID}`,
+                identifiers: [`zigbee2mqtt_${entityID}`],
                 name: entity.friendlyName,
                 sw_version: `Zigbee2mqtt ${this.zigbee2mqttVersion}`,
                 model: `${mappedModel.description} (${mappedModel.model})`,
@@ -824,6 +1030,12 @@ class HomeAssistant {
                 payload.set_position_topic = payload.command_topic;
             }
 
+            if (payload.tilt_command_topic && payload.command_topic) {
+                // Home Assistant does not support templates to set tilt (as of 2019-08-17),
+                // so we (have to) use a subtopic.
+                payload.tilt_command_topic = payload.command_topic + '/tilt';
+            }
+
             if (payload.mode_state_topic) {
                 payload.mode_state_topic = stateTopic;
             }
@@ -856,8 +1068,10 @@ class HomeAssistant {
             if (device.hasOwnProperty('homeassistant')) {
                 const add = (obj) => {
                     Object.keys(obj).forEach((key) => {
-                        if (['number', 'string'].includes(typeof obj[key])) {
+                        if (['number', 'string', 'boolean'].includes(typeof obj[key])) {
                             payload[key] = obj[key];
+                        } else if (typeof obj[key] === 'object' && obj[key] === null) {
+                            delete payload[key];
                         } else if (key === 'device' && typeof obj[key] === 'object') {
                             Object.keys(obj['device']).forEach((key) => {
                                 payload['device'][key] = obj['device'][key];
@@ -880,7 +1094,7 @@ class HomeAssistant {
     }
 
     onMQTTMessage(topic, message) {
-        if (!topic === 'hass/status') {
+        if (!topic === this.statusTopic) {
             return false;
         }
 
