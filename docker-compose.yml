@@ -129,8 +129,8 @@ services:
         ipv4_address: 10.0.0.8
     volumes:
       - "./zigbee2mqtt/data:/app/data"
-      - "./zigbee2mqtt/zigbee-herdsman-converters:/app/node_modules/zigbee-herdsman-converters"
-      - "./zigbee2mqtt/homeassistant-extension/homeassistant.js:/app/lib/extension/homeassistant.js"
+      # - "./zigbee2mqtt/zigbee-herdsman-converters:/app/node_modules/zigbee-herdsman-converters"
+      # - "./zigbee2mqtt/homeassistant-extension/homeassistant.js:/app/lib/extension/homeassistant.js"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
     devices:
