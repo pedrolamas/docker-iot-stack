@@ -1,22 +1,9 @@
 version: '3.7'
 
 services:
-  cloudflared:
-    image: visibilityspots/cloudflared:arm64
+  adguardhome:
+    image: adguard/adguardhome:arm64-latest
     restart: unless-stopped
-    networks:
-      backbone:
-        ipv4_address: 10.0.0.2
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-
-  pihole:
-    depends_on:
-      - cloudflared
-    image: pihole/pihole:latest
-    restart: unless-stopped
-    hostname: pihole
     networks:
       backbone:
         ipv4_address: 10.0.0.3
@@ -24,38 +11,22 @@ services:
       - "53:53/tcp"
       - "53:53/udp"
       - "80:80"
+      # - "443:443"
+      - "853:853"
+      - "3000:3000"
     volumes:
-      - "./pihole/etc-pihole/:/etc/pihole/"
-      - "./pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/"
-    environment:
-      - DNS1=10.0.0.2#5054
-      - DNS2=no
-      - IPv6=false
-      - TZ=Europe/London
-      - DNSMASQ_LISTENING=all
-      - WEBPASSWORD=admin
-      - VIRTUAL_HOST=nanopineo2.local.maialamas.com
+      - "./adguardhome/work:/opt/adguardhome/work"
+      - "./adguardhome/conf:/opt/adguardhome/conf"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
     dns:
       - 127.0.0.1
       - 1.1.1.1
-    extra_hosts:
-      - "gateway:192.168.40.1"
-      - "docker:10.0.0.1"
-      - "cloudflared:10.0.0.2"
-      - "nginx:10.0.0.4"
-      - "home-assistant:10.0.0.5"
-      - "node-red:10.0.0.6"
-      - "mosquitto:10.0.0.7"
-      - "zigbee2mqtt:10.0.0.8"
-      - "portainer:10.0.0.9"
-      - "influxdb:10.0.0.10"
-      - "grafana:10.0.0.11"
-      - "chronograf:10.0.0.12"
 
   nginx:
     depends_on:
       - homeassistant
-    image: arm64v8/nginx:latest
+    image: nginx
     restart: unless-stopped
     networks:
       backbone:
@@ -70,8 +41,7 @@ services:
   homeassistant:
     depends_on:
       - mosquitto
-      - influxdb
-    image: homeassistant/aarch64-homeassistant:stable
+    image: homeassistant/home-assistant
     restart: unless-stopped
     networks:
       backbone:
@@ -86,30 +56,14 @@ services:
       - PYTHONWARNINGS=ignore:Unverified HTTPS request
     dns: 10.0.0.3
 
-  nodered:
+  mosquitto:
     depends_on:
-      - pihole
-    image: nodered/node-red:latest
+      - adguardhome
+    image: eclipse-mosquitto
     restart: unless-stopped
     networks:
       backbone:
         ipv4_address: 10.0.0.6
-    ports:
-      - "1880:1880"
-    volumes:
-      - "./nodered/data:/data"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-    dns: 10.0.0.3
-
-  mosquitto:
-    depends_on:
-      - pihole
-    image: arm64v8/eclipse-mosquitto
-    restart: unless-stopped
-    networks:
-      backbone:
-        ipv4_address: 10.0.0.7
     ports:
       - "1883:1883"
       - "9001:9001"
@@ -126,80 +80,30 @@ services:
     restart: unless-stopped
     networks:
       backbone:
-        ipv4_address: 10.0.0.8
+        ipv4_address: 10.0.0.7
     volumes:
       - "./zigbee2mqtt/data:/app/data"
-      # - "./zigbee2mqtt/zigbee-herdsman-converters:/app/node_modules/zigbee-herdsman-converters"
-      # - "./zigbee2mqtt/homeassistant-extension/homeassistant.js:/app/lib/extension/homeassistant.js"
+      - "./zigbee2mqtt/zigbee-herdsman-converters:/app/node_modules/zigbee-herdsman-converters"
+      - "./zigbee2mqtt/homeassistant-extension/homeassistant.js:/app/lib/extension/homeassistant.js"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
     devices:
        - "/dev/ttyACM0:/dev/ttyACM0"
     dns: 10.0.0.3
 
-  portainer:
-    image: portainer/portainer
-    restart: unless-stopped
-    networks:
-      backbone:
-        ipv4_address: 10.0.0.9
-    ports:
-      - "9000:9000"
-    volumes:
-      - "./portainer/data:/data"
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-    dns: 10.0.0.3
-
-  influxdb:
+  telegraf:
     depends_on:
-      - pihole
-    image: arm64v8/influxdb
+      - adguardhome
+    image: telegraf
     restart: unless-stopped
     networks:
       backbone:
-        ipv4_address: 10.0.0.10
-    ports:
-      - "8086:8086"
+        ipv4_address: 10.0.0.8
     volumes:
-      - "./influxdb/data:/var/lib/influxdb"
+      - "./telegraf/config/telegraf.conf:/etc/telegraf/telegraf.conf:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
     dns: 10.0.0.3
-
-  grafana:
-    depends_on:
-      - influxdb
-    image: grafana/grafana-arm64v8-linux:dev-musl
-    restart: unless-stopped
-    networks:
-      backbone:
-        ipv4_address: 10.0.0.11
-    ports:
-      - "3000:3000"
-    volumes:
-      - "./grafana/data:/var/lib/grafana"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-    dns: 10.0.0.3
-
-  # chronograf:
-  #   depends_on:
-  #     - influxdb
-  #   image: arm64v8/chronograf
-  #   restart: unless-stopped
-  #   networks:
-  #     backbone:
-  #       ipv4_address: 10.0.0.12
-  #   ports:
-  #     - "8888:8888"
-  #   volumes:
-  #     - "./chronograf/data:/var/lib/chronograf"
-  #     - "/etc/localtime:/etc/localtime:ro"
-  #     - "/etc/timezone:/etc/timezone:ro"
-  #   command: --influxdb-url=http://influxdb:8086
-  #   dns: 10.0.0.3
 
 networks:
   backbone:
