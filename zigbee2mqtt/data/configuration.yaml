@@ -2,11 +2,42 @@ homeassistant: true
 permit_join: false
 mqtt:
   base_topic: zigbee2mqtt
-  server: 'mqtt://10.0.0.7'
+  server: 'mqtt://10.0.0.6'
 serial:
   port: /dev/ttyACM0
 advanced:
   channel: 20
   log_level: warn
-  log_directory: /tmp/zigbee2mqtt_%TIMESTAMP%
+  log_output:
+    - console
 devices:
+  '0x00158d0002c12756':
+    friendly_name: MasterBedroomClimate
+  '0x00158d0002e935dd':
+    friendly_name: LivingRoomClimate
+  '0x000d6ffffeda2b01':
+    friendly_name: SmartPlug2
+  '0x000d6ffffec24c99':
+    friendly_name: SmartPlug1
+  '0x00158d0002e20b09':
+    friendly_name: BackDoor
+  '0x00158d0002bfc3fd':
+    friendly_name: FrontDoor
+  '0x00158d00031342a1':
+    friendly_name: FrontDoorMailbox
+  '0x00158d0002581c83':
+    friendly_name: SmartSwitch
+  '0x00158d0003130f12':
+    friendly_name: SmartVibrationSensor
+  '0x00158d00025c0460':
+    friendly_name: KidsBedroomClimate
+  '0x00158d000449f059':
+    friendly_name: LowerFloorClimate
+  '0x000d6f000be640b4':
+    friendly_name: SmartPlug4
+  '0x000d6f000be64a15':
+    friendly_name: SmartPlug5
+  '0x000d6f000b7a6dad':
+    friendly_name: SmartPlug3
+  '0x001e5e0902145f37':
+    friendly_name: SmartPlug6
