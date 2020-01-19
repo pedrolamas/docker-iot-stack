@@ -6,7 +6,9 @@ mqtt:
 serial:
   port: /dev/ttyACM0
 advanced:
+  pan_id: 6752
   channel: 20
+  network_key: '!secret network_key'
   log_level: warn
   log_output:
     - console
