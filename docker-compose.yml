@@ -40,6 +40,7 @@ services:
 
   homeassistant:
     depends_on:
+      - mariadb
       - mosquitto
     image: homeassistant/home-assistant
     restart: unless-stopped
@@ -103,6 +104,23 @@ services:
       - "./telegraf/config/telegraf.conf:/etc/telegraf/telegraf.conf:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
+    dns: 10.0.0.3
+
+  mariadb:
+    depends_on:
+      - adguardhome
+    image: mariadb
+    restart: unless-stopped
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.9
+    volumes:
+      - "./mariadb/data:/var/lib/mysql"
+      - "./mariadb/secrets:/var/lib/secrets:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    environment:
+      - MYSQL_ROOT_PASSWORD_FILE=/var/lib/secrets/mysql-root-password
     dns: 10.0.0.3
 
 networks:
