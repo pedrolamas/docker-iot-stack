@@ -1,3 +1,5 @@
 *
 !.gitignore
+!pihole-FTL.conf
+!setupVars.conf
 !whitelist.txt
