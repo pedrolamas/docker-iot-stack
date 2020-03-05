@@ -1,9 +1,22 @@
 version: '3.7'
 
 services:
-  adguardhome:
-    image: adguard/adguardhome:arm64-latest
+  cloudflared:
+    image: visibilityspots/cloudflared:arm64
     restart: unless-stopped
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.2
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+
+  pihole:
+    depends_on:
+      - cloudflared
+    image: pihole/pihole:latest
+    restart: unless-stopped
+    hostname: pihole
     networks:
       backbone:
         ipv4_address: 10.0.0.3
@@ -11,17 +24,42 @@ services:
       - "53:53/tcp"
       - "53:53/udp"
       - "80:80"
-      # - "443:443"
-      - "853:853"
-      - "3000:3000"
     volumes:
-      - "./adguardhome/work:/opt/adguardhome/work"
-      - "./adguardhome/conf:/opt/adguardhome/conf"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
+      - "./pihole/etc-pihole/:/etc/pihole/"
+      - "./pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/"
+    environment:
+      - DNS1=10.0.0.2#5054
+      - DNS2=no
+      - IPv6=false
+      - TZ=Europe/London
+      - DNSMASQ_LISTENING=all
+      - WEBPASSWORD=admin
+      - VIRTUAL_HOST=nanopineo2.local.maialamas.com
     dns:
       - 127.0.0.1
       - 1.1.1.1
+
+  # adguardhome:
+  #   image: adguard/adguardhome:arm64-latest
+  #   restart: unless-stopped
+  #   networks:
+  #     backbone:
+  #       ipv4_address: 10.0.0.3
+  #   ports:
+  #     - "53:53/tcp"
+  #     - "53:53/udp"
+  #     - "80:80"
+  #     # - "443:443"
+  #     - "853:853"
+  #     # - "3000:3000"
+  #   volumes:
+  #     - "./adguardhome/work:/opt/adguardhome/work"
+  #     - "./adguardhome/conf:/opt/adguardhome/conf"
+  #     - "/etc/localtime:/etc/localtime:ro"
+  #     - "/etc/timezone:/etc/timezone:ro"
+  #   dns:
+  #     - 127.0.0.1
+  #     - 1.1.1.1
 
   nginx:
     depends_on:
@@ -59,7 +97,7 @@ services:
 
   mosquitto:
     depends_on:
-      - adguardhome
+      - pihole
     image: eclipse-mosquitto
     restart: unless-stopped
     networks:
@@ -77,24 +115,26 @@ services:
   zigbee2mqtt:
     depends_on:
       - mosquitto
-    image: koenkk/zigbee2mqtt
+    image: koenkk/zigbee2mqtt:latest-dev
     restart: unless-stopped
     networks:
       backbone:
         ipv4_address: 10.0.0.7
     volumes:
       - "./zigbee2mqtt/data:/app/data"
-      - "./zigbee2mqtt/zigbee-herdsman-converters:/app/node_modules/zigbee-herdsman-converters"
-      - "./zigbee2mqtt/homeassistant-extension/homeassistant.js:/app/lib/extension/homeassistant.js"
+      # - "./zigbee2mqtt/zigbee-herdsman-converters:/app/node_modules/zigbee-herdsman-converters"
+      # - "./zigbee2mqtt/homeassistant-extension/homeassistant.js:/app/lib/extension/homeassistant.js"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
+    # environment:
+    #   - DEBUG=*
     devices:
        - "/dev/ttyACM0:/dev/ttyACM0"
     dns: 10.0.0.3
 
   telegraf:
     depends_on:
-      - adguardhome
+      - pihole
     image: telegraf
     restart: unless-stopped
     networks:
@@ -108,7 +148,7 @@ services:
 
   mariadb:
     depends_on:
-      - adguardhome
+      - pihole
     image: mariadb
     restart: unless-stopped
     networks:
@@ -121,6 +161,22 @@ services:
       - "/etc/timezone:/etc/timezone:ro"
     environment:
       - MYSQL_ROOT_PASSWORD_FILE=/var/lib/secrets/mysql-root-password
+    dns: 10.0.0.3
+
+  grafana:
+    depends_on:
+      - pihole
+    image: grafana/grafana-arm64v8-linux
+    restart: unless-stopped
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.10
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./grafana/data:/var/lib/grafana"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
     dns: 10.0.0.3
 
 networks:
