@@ -16,31 +16,23 @@ Feel free to send questions or PR's with improvements!
 
 ## Images
 
-### Cloudflared
+### AdGuard Home
 
-Cloudflare DNS resolution over an HTTPS endpoint.
+Free and open source, powerful network-wide ads & trackers blocking DNS server.
 
-* Image: [visibilityspots/cloudflared](https://hub.docker.com/r/visibilityspots/cloudflared)
-* Tag: arm64
-
-### Pi-hole
-
-The Pi-hole® is a DNS sinkhole that protects your devices from unwanted content, without installing any client-side software.
-
-* Image: [pihole/pihole](https://hub.docker.com/r/pihole/pihole)
+* Image: [adguard/adguardhome](https://hub.docker.com/r/adguard/adguardhome)
 
 ### Nginx
 
 Nginx (pronounced "engine-x") is an open source reverse proxy server for HTTP, HTTPS, SMTP, POP3, and IMAP protocols, as well as a load balancer, HTTP cache, and a web server (origin server).
 
-* Image: [arm64v8/nginx](https://hub.docker.com/r/arm64v8/nginx)
+* Image: [nginx](https://hub.docker.com/_/nginx)
 
 ### Home Assistant
 
 Home Assistant is an open source home automation tool that puts local control and privacy first.
 
-* Image: [homeassistant/aarch64-homeassistant](https://hub.docker.com/r/homeassistant/aarch64-homeassistant)
-* Tag: stable
+* Image: [homeassistant/home-assistant](https://hub.docker.com/r/homeassistant/home-assistant)
 
 ### Node-RED
 
@@ -52,14 +44,32 @@ Node-RED is a programming tool for wiring together hardware devices, APIs and on
 
 Eclipse Mosquitto is an open source implementation of a server for version 3.1 and 3.1.1 of the MQTT protocol.
 
-* Image: [arm64v8/eclipse-mosquitto](https://hub.docker.com/r/arm64v8/eclipse-mosquitto)
+* Image: [eclipse-mosquitto](https://hub.docker.com/_/eclipse-mosquitto)
 
 ### Zigbee2Mqtt
 
 Zigbee2Mqtt allows you to use your Zigbee devices without the vendors bridge or gateway.
 
 * Image: [koenkk/zigbee2mqtt](https://hub.docker.com/r/koenkk/zigbee2mqtt)
-* Tag: arm64v8
+
+### Telegraf
+
+Telegraf is an agent for collecting metrics and writing them to InfluxDB or other outputs.
+
+* Image: [telegraf](https://hub.docker.com/_/telegraf)
+
+### mariadb
+
+MariaDB is a community-developed fork of MySQL intended to remain free under the GNU GPL.
+
+* Image: [mariadb](https://hub.docker.com/_/mariadb)
+
+### Grafana
+
+Grafana is the open source analytics and monitoring solution for every database.
+
+* Image: [grafana/grafana](grafana/grafana:7.0.0-beta1)
+  Tag: 7.0.0-beta1
 
 ### Portainer
 

@@ -1,47 +1,22 @@
 version: '3.7'
 
 services:
-  cloudflared:
-    image: visibilityspots/cloudflared:arm64
-    restart: unless-stopped
-    networks:
-      backbone:
-        ipv4_address: 10.0.0.2
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-
-  pihole:
-    depends_on:
-      - cloudflared
-    image: pihole/pihole:latest
-    restart: unless-stopped
-    hostname: pihole
-    networks:
-      backbone:
-        ipv4_address: 10.0.0.3
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-      - "80:80"
-    volumes:
-      - "./pihole/etc-pihole/:/etc/pihole/"
-      - "./pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/"
-    environment:
-      - DNS1=10.0.0.2#5054
-      - DNS2=no
-      - IPv6=false
-      - TZ=Europe/London
-      - DNSMASQ_LISTENING=all
-      - WEBPASSWORD=admin
-      - VIRTUAL_HOST=nanopineo2.local.maialamas.com
-    dns:
-      - 127.0.0.1
-      - 1.1.1.1
-
-  # adguardhome:
-  #   image: adguard/adguardhome:arm64-latest
+  # cloudflared:
+  #   image: visibilityspots/cloudflared:arm64
   #   restart: unless-stopped
+  #   networks:
+  #     backbone:
+  #       ipv4_address: 10.0.0.2
+  #   volumes:
+  #     - "/etc/localtime:/etc/localtime:ro"
+  #     - "/etc/timezone:/etc/timezone:ro"
+
+  # pihole:
+  #   depends_on:
+  #     - cloudflared
+  #   image: pihole/pihole
+  #   restart: unless-stopped
+  #   hostname: pihole
   #   networks:
   #     backbone:
   #       ipv4_address: 10.0.0.3
@@ -49,17 +24,42 @@ services:
   #     - "53:53/tcp"
   #     - "53:53/udp"
   #     - "80:80"
-  #     # - "443:443"
-  #     - "853:853"
-  #     # - "3000:3000"
   #   volumes:
-  #     - "./adguardhome/work:/opt/adguardhome/work"
-  #     - "./adguardhome/conf:/opt/adguardhome/conf"
-  #     - "/etc/localtime:/etc/localtime:ro"
-  #     - "/etc/timezone:/etc/timezone:ro"
+  #     - "./pihole/etc-pihole/:/etc/pihole/"
+  #     - "./pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/"
+  #   environment:
+  #     - DNS1=10.0.0.2#5054
+  #     - DNS2=no
+  #     - IPv6=false
+  #     - TZ=Europe/London
+  #     - DNSMASQ_LISTENING=all
+  #     - WEBPASSWORD=admin
+  #     - VIRTUAL_HOST=nanopineo2.local.maialamas.com
   #   dns:
   #     - 127.0.0.1
   #     - 1.1.1.1
+
+  adguardhome:
+    image: adguard/adguardhome:arm64-latest
+    restart: unless-stopped
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.3
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "80:80"
+      # - "443:443"
+      - "853:853"
+      # - "3000:3000"
+    volumes:
+      - "./adguardhome/work:/opt/adguardhome/work"
+      - "./adguardhome/conf:/opt/adguardhome/conf"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
 
   nginx:
     depends_on:
@@ -72,8 +72,11 @@ services:
     ports:
       - "443:443"
     volumes:
-      - "./nginx/etc-nginx/nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "./nginx/etc-nginx/nginx.template:/etc/nginx/nginx.template:ro"
       - "./nginx/etc-nginx-certs:/etc/nginx/certs"
+    env_file: ./nginx/docker/secrets.env
+    command: >
+      sh -c "envsubst \"`env | awk -F = '{printf \" $$%s\", $$1}'`\" < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
     dns: 10.0.0.3
 
   homeassistant:
@@ -97,7 +100,7 @@ services:
 
   mosquitto:
     depends_on:
-      - pihole
+      - adguardhome
     image: eclipse-mosquitto
     restart: unless-stopped
     networks:
@@ -115,7 +118,7 @@ services:
   zigbee2mqtt:
     depends_on:
       - mosquitto
-    image: koenkk/zigbee2mqtt:latest-dev
+    image: koenkk/zigbee2mqtt
     restart: unless-stopped
     networks:
       backbone:
@@ -134,7 +137,7 @@ services:
 
   telegraf:
     depends_on:
-      - pihole
+      - adguardhome
     image: telegraf
     restart: unless-stopped
     networks:
@@ -148,7 +151,7 @@ services:
 
   mariadb:
     depends_on:
-      - pihole
+      - adguardhome
     image: mariadb
     restart: unless-stopped
     networks:
@@ -165,8 +168,8 @@ services:
 
   grafana:
     depends_on:
-      - pihole
-    image: grafana/grafana-arm64v8-linux
+      - adguardhome
+    image: grafana/grafana:7.0.0-beta1
     restart: unless-stopped
     networks:
       backbone:
