@@ -8,7 +8,7 @@ To install docker, please use the [convenience script](https://docs.docker.com/i
 
 To run, just enter the root folder and run:
 
-```
+```sh
 docker-compose up -d
 ```
 
