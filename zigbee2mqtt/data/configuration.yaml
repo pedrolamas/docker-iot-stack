@@ -41,6 +41,8 @@ devices:
     friendly_name: SmartPlug5
   '0x000d6f000b7a6dad':
     friendly_name: SmartPlug3
+  '0x00158d000303ffbd':
+    friendly_name: LaundryRoomClimate
   '0x001e5e0902145f37':
     friendly_name: SmartPlug6
   '0x000d6f000bcb5e57':

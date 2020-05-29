@@ -73,7 +73,9 @@ services:
       - "443:443"
     volumes:
       - "./nginx/etc-nginx/nginx.template:/etc/nginx/nginx.template:ro"
-      - "./nginx/etc-nginx-certs:/etc/nginx/certs"
+      - "./nginx/etc-nginx-certs:/etc/nginx/certs:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
     env_file: ./nginx/docker/secrets.env
     command: >
       sh -c "envsubst \"`env | awk -F = '{printf \" $$%s\", $$1}'`\" < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
@@ -89,6 +91,8 @@ services:
       backbone:
         ipv4_address: 10.0.0.5
     ports:
+      - "1900:1900/udp"
+      - "5353:5353/udp"
       - "8123:8123"
     volumes:
       - "./homeassistant/config:/config"
@@ -169,7 +173,7 @@ services:
   grafana:
     depends_on:
       - adguardhome
-    image: grafana/grafana:7.0.0-beta1
+    image: grafana/grafana
     restart: unless-stopped
     networks:
       backbone:
@@ -195,6 +199,22 @@ services:
     volumes:
       - "./portainer/data:/data"
       - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    dns: 10.0.0.3
+
+  esphome:
+    depends_on:
+      - adguardhome
+    image: esphome/esphome-aarch64
+    restart: unless-stopped
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.12
+    ports:
+      - "6052:6052"
+    volumes:
+      - "./esphome/config:/config"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
     dns: 10.0.0.3
