@@ -91,7 +91,9 @@ services:
       backbone:
         ipv4_address: 10.0.0.5
     ports:
+      - "1900:1900/tcp"
       - "1900:1900/udp"
+      - "5353:5353/tcp"
       - "5353:5353/udp"
       - "8123:8123"
     volumes:
