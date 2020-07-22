@@ -48,7 +48,7 @@ services:
     ports:
       - "53:53/tcp"
       - "53:53/udp"
-      - "80:80"
+      # - "80:80"
       # - "443:443"
       - "853:853"
       # - "3000:3000"
@@ -70,16 +70,21 @@ services:
       backbone:
         ipv4_address: 10.0.0.4
     ports:
+      - "80:80"
       - "443:443"
+      - "21443:21443"
     volumes:
       - "./nginx/etc-nginx/nginx.template:/etc/nginx/nginx.template:ro"
-      - "./nginx/etc-nginx-certs:/etc/nginx/certs:ro"
+      - "./nginx/etc-nginx-cf-certs:/etc/nginx/cf-certs"
+      - "./nginx/etc-nginx-le-certs:/etc/nginx/le-certs"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
     env_file: ./nginx/docker/secrets.env
     command: >
       sh -c "envsubst \"`env | awk -F = '{printf \" $$%s\", $$1}'`\" < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
     dns: 10.0.0.3
+    labels:
+      - sh.acme.target
 
   homeassistant:
     depends_on:
@@ -219,6 +224,32 @@ services:
       - "./esphome/config:/config"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
+    environment:
+      - ESPHOME_DASHBOARD_USE_PING=true
+    dns: 10.0.0.3
+
+  acme.sh:
+    depends_on:
+      - adguardhome
+    image: guillaumedsde/acme.sh
+    restart: unless-stopped
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.13
+    volumes:
+      - "./acme.sh/data:/acme.sh"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    env_file: ./acme.sh/docker/secrets.env
+    command: daemon
+    environment:
+      - DEPLOY_DOCKER_CONTAINER_LABEL=sh.acme.target
+      - DEPLOY_DOCKER_CONTAINER_KEY_FILE=/etc/nginx/le-certs/key.pem
+      - DEPLOY_DOCKER_CONTAINER_CERT_FILE="/etc/nginx/le-certs/cert.pem"
+      - DEPLOY_DOCKER_CONTAINER_CA_FILE="/etc/nginx/le-certs/ca.pem"
+      - DEPLOY_DOCKER_CONTAINER_FULLCHAIN_FILE="/etc/nginx/le-certs/full.pem"
+      - DEPLOY_DOCKER_CONTAINER_RELOAD_CMD="service nginx force-reload"
     dns: 10.0.0.3
 
 networks:

@@ -6,6 +6,22 @@ events {
 }
 
 http {
+  upstream adguardhome-upstream {
+    server adguardhome;
+  }
+  upstream homeassistant-upstream {
+    server homeassistant:8123;
+  }
+  upstream grafana-upstream {
+    server grafana:3000;
+  }
+  upstream portainer-upstream {
+    server portainer:9000;
+  }
+  upstream esphome-upstream {
+    server esphome:6052;
+  }
+
   sendfile on;
   tcp_nopush on;
   tcp_nodelay on;
@@ -19,19 +35,6 @@ http {
 
   server_names_hash_bucket_size 128;
   server_tokens off;
-
-  ssl_certificate /etc/nginx/certs/cf-certificate.pem;
-  ssl_certificate_key /etc/nginx/certs/cf-privatekey.pem;
-  ssl_client_certificate /etc/nginx/certs/cf-origin-pull-ca.pem;
-  ssl_verify_client on;
-  ssl_dhparam /etc/nginx/certs/dhparam.pem;
-  ssl_ecdh_curve secp384r1;
-  ssl_protocols TLSv1.3;
-  ssl_ciphers EECDH+AESGCM:EDH+AESGCM;
-  ssl_prefer_server_ciphers on;
-  ssl_session_timeout 10m;
-  ssl_session_cache shared:SSL:10m;
-  ssl_session_tickets off;
 
   add_header X-Frame-Options SAMEORIGIN;
   add_header X-XSS-Protection "1; mode=block";
@@ -51,16 +54,17 @@ http {
     '' close;
   }
 
-#  server {
-#    listen 80 default_server;
-#
-#    location / {
-#      proxy_pass http://pihole/;
-#    }
-#  }
+  server {
+    listen 80 default_server;
+	  listen [::]:80 default_server;
+
+	  server_name _;
+
+	  return 301 https://$host$request_uri;
+  }
 
   server {
-    listen 443 ssl http2;
+    include cf-certs/nginx-server.conf;
 
     server_name _;
 
@@ -68,24 +72,72 @@ http {
   }
 
   server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
+    include cf-certs/nginx-server.conf;
 
     server_name ${NGINX_SERVER_HOMEASSISTANT};
 
     location / {
-      proxy_pass http://homeassistant:8123/;
+      proxy_pass http://homeassistant-upstream/;
     }
   }
 
   server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
+    include cf-certs/nginx-server.conf;
 
     server_name ${NGINX_SERVER_GRAFANA};
 
     location / {
-      proxy_pass http://grafana:3000/;
+      proxy_pass http://grafana-upstream/;
+    }
+  }
+
+  server {
+    include le-certs/nginx-server.conf;
+
+    server_name adguardhome.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    location / {
+      proxy_pass http://adguardhome-upstream/;
+    }
+  }
+
+  server {
+    include le-certs/nginx-server.conf;
+
+    server_name homeassistant.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    location / {
+      proxy_pass http://homeassistant-upstream/;
+    }
+  }
+
+  server {
+    include le-certs/nginx-server.conf;
+
+    server_name grafana.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    location / {
+      proxy_pass http://grafana-upstream/;
+    }
+  }
+
+  server {
+    include le-certs/nginx-server.conf;
+
+    server_name portainer.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    location / {
+      proxy_pass http://portainer-upstream/;
+    }
+  }
+
+  server {
+    include le-certs/nginx-server.conf;
+
+    server_name esphome.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    location / {
+      proxy_pass http://esphome-upstream/;
     }
   }
 }

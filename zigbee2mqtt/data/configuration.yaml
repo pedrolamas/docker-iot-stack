@@ -47,3 +47,9 @@ devices:
     friendly_name: SmartPlug6
   '0x000d6f000bcb5e57':
     friendly_name: SmartPlug7
+  '0x588e81fffe6536aa':
+    friendly_name: KidsBedroomDimmer
+  '0x588e81fffe6536a4':
+    friendly_name: MasterBedroomDimmer
+  '0x14b457fffe156c68':
+    friendly_name: PIRSensor
