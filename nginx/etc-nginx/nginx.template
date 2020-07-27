@@ -21,6 +21,9 @@ http {
   upstream esphome-upstream {
     server esphome:6052;
   }
+  upstream vscode-upstream {
+    server vscode:8080;
+  }
 
   sendfile on;
   tcp_nopush on;
@@ -139,6 +142,16 @@ http {
 
     location / {
       proxy_pass http://esphome-upstream/;
+    }
+  }
+
+  server {
+    include le-certs/nginx-server.conf;
+
+    server_name vscode.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    location / {
+      proxy_pass http://vscode-upstream/;
     }
   }
 }

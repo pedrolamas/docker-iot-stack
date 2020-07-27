@@ -202,6 +202,23 @@ services:
       - DEPLOY_DOCKER_CONTAINER_RELOAD_CMD="service nginx force-reload"
     dns: 10.0.0.3
 
+  vscode:
+    depends_on:
+      - homeassistant
+    image: codercom/code-server
+    restart: unless-stopped
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.14
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./vscode/data:/home/coder/.local/share/code-server"
+      - "./:/home/coder/project"
+    command: >
+      --auth none project
+    dns: 10.0.0.3
+
 networks:
   backbone:
     driver: bridge
