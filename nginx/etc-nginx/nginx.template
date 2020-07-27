@@ -39,7 +39,6 @@ http {
   server_names_hash_bucket_size 128;
   server_tokens off;
 
-  add_header X-Frame-Options SAMEORIGIN;
   add_header X-XSS-Protection "1; mode=block";
   add_header Referrer-Policy strict-origin-when-cross-origin;
   add_header X-Content-Type-Options nosniff;
