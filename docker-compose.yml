@@ -1,46 +1,8 @@
 version: '3.7'
 
 services:
-  # cloudflared:
-  #   image: visibilityspots/cloudflared:arm64
-  #   restart: unless-stopped
-  #   networks:
-  #     backbone:
-  #       ipv4_address: 10.0.0.2
-  #   volumes:
-  #     - "/etc/localtime:/etc/localtime:ro"
-  #     - "/etc/timezone:/etc/timezone:ro"
-
-  # pihole:
-  #   depends_on:
-  #     - cloudflared
-  #   image: pihole/pihole
-  #   restart: unless-stopped
-  #   hostname: pihole
-  #   networks:
-  #     backbone:
-  #       ipv4_address: 10.0.0.3
-  #   ports:
-  #     - "53:53/tcp"
-  #     - "53:53/udp"
-  #     - "80:80"
-  #   volumes:
-  #     - "./pihole/etc-pihole/:/etc/pihole/"
-  #     - "./pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/"
-  #   environment:
-  #     - DNS1=10.0.0.2#5054
-  #     - DNS2=no
-  #     - IPv6=false
-  #     - TZ=Europe/London
-  #     - DNSMASQ_LISTENING=all
-  #     - WEBPASSWORD=admin
-  #     - VIRTUAL_HOST=nanopineo2.local.maialamas.com
-  #   dns:
-  #     - 127.0.0.1
-  #     - 1.1.1.1
-
   adguardhome:
-    image: adguard/adguardhome:arm64-latest
+    image: adguard/adguardhome
     restart: unless-stopped
     networks:
       backbone:
@@ -48,10 +10,7 @@ services:
     ports:
       - "53:53/tcp"
       - "53:53/udp"
-      # - "80:80"
-      # - "443:443"
       - "853:853"
-      # - "3000:3000"
     volumes:
       - "./adguardhome/work:/opt/adguardhome/work"
       - "./adguardhome/conf:/opt/adguardhome/conf"
@@ -63,7 +22,11 @@ services:
 
   nginx:
     depends_on:
+      - adguardhome
       - homeassistant
+      - grafana
+      - portainer
+      - esphome
     image: nginx
     restart: unless-stopped
     networks:
@@ -73,6 +36,9 @@ services:
       - "80:80"
       - "443:443"
       - "21443:21443"
+    extra_hosts:
+      - "homeassistant:172.17.0.1"
+      - "esphome:172.17.0.1"
     volumes:
       - "./nginx/etc-nginx/nginx.template:/etc/nginx/nginx.template:ro"
       - "./nginx/etc-nginx-cf-certs:/etc/nginx/cf-certs"
@@ -92,15 +58,7 @@ services:
       - mosquitto
     image: homeassistant/home-assistant
     restart: unless-stopped
-    networks:
-      backbone:
-        ipv4_address: 10.0.0.5
-    ports:
-      - "1900:1900/tcp"
-      - "1900:1900/udp"
-      - "5353:5353/tcp"
-      - "5353:5353/udp"
-      - "8123:8123"
+    network_mode: host
     volumes:
       - "./homeassistant/config:/config"
       - "/etc/localtime:/etc/localtime:ro"
@@ -185,8 +143,6 @@ services:
     networks:
       backbone:
         ipv4_address: 10.0.0.10
-    ports:
-      - "3000:3000"
     volumes:
       - "./grafana/data:/var/lib/grafana"
       - "/etc/localtime:/etc/localtime:ro"
@@ -201,8 +157,6 @@ services:
     networks:
       backbone:
         ipv4_address: 10.0.0.11
-    ports:
-      - "9000:9000"
     volumes:
       - "./portainer/data:/data"
       - "/var/run/docker.sock:/var/run/docker.sock"
@@ -215,11 +169,7 @@ services:
       - adguardhome
     image: esphome/esphome-aarch64
     restart: unless-stopped
-    networks:
-      backbone:
-        ipv4_address: 10.0.0.12
-    ports:
-      - "6052:6052"
+    network_mode: host
     volumes:
       - "./esphome/config:/config"
       - "/etc/localtime:/etc/localtime:ro"
