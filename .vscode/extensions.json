@@ -4,6 +4,8 @@
     "editorconfig.editorconfig",
     "keesschollaart.vscode-home-assistant",
     "lukas-tr.materialdesignicons-intellisense",
-    "redhat.vscode-yaml"
+    "redhat.vscode-yaml",
+    "william-voyek.vscode-nginx",
+    "emilast.LogFileHighlighter"
   ]
 }

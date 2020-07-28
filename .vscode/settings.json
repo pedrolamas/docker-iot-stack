@@ -1,6 +1,6 @@
 {
     "files.associations": {
-        "*.yaml": "home-assistant",
+        "**/homeassistant/config/**/*.yaml": "home-assistant",
         "nginx.template": "nginx"
     }
 }
