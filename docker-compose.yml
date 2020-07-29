@@ -215,8 +215,9 @@ services:
     volumes:
       - "./vscode/data:/home/coder/.local/share/code-server"
       - "./:/home/coder/project"
+    env_file: ./vscode/docker/secrets.env
     command: >
-      --auth none project
+      --auth none --disable-telemetry project
     dns: 10.0.0.3
 
 networks:

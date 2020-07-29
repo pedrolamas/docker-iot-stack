@@ -1,6 +1,79 @@
 {
-    "files.associations": {
-        "**/homeassistant/config/**/*.yaml": "home-assistant",
-        "nginx.template": "nginx"
+  "files.associations": {
+    "**/homeassistant/config/**/*.yaml": "home-assistant",
+    "nginx.template": "nginx"
+  },
+  "files.watcherExclude": {
+    ".nfs**": true,
+    ".Trash-0/**": true,
+    "**/__pycache__/**": true,
+    "**/._*": true,
+    "**/.cloud": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.HA_VERSION": true,
+    "**/.storage": true,
+    "**/*.db-shm": true,
+    "**/*.db-wal": true,
+    "**/*.db": true,
+    "**/*.log": true,
+    "**/deps/**": true,
+    "**/OZW_Log.txt": true,
+    "**/pyozw.sqlite": true
+  },
+  "search.exclude": {
+    ".Trash-0/**": true,
+    "**/__pycache__/**": true,
+    "**/._*": true,
+    "**/.cloud": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.git": true,
+    "**/.HA_VERSION": true,
+    "**/.storage": true,
+    "**/*.db-shm": true,
+    "**/*.db-wal": true,
+    "**/*.db": true,
+    "**/*.log": true,
+    "**/deps/**": true,
+    "**/OZW_Log.txt": true,
+    "**/pyozw.sqlite": true
+  },
+  "files.exclude": {
+    ".Trash-0/**": true,
+    "**/__pycache__": true,
+    "**/.cloud": true,
+    "**/.DS_Store": true,
+    "**/.git": true,
+    "**/.HA_VERSION": true,
+    "**/*.db-shm": true,
+    "**/*.db-wal": true,
+    "**/*.db": true,
+    "**/deps/**": true
+  },
+  "yaml.customTags": [
+    "!env_var scalar",
+    "!include_dir_list scalar",
+    "!include_dir_merge_list scalar",
+    "!include_dir_merge_named scalar",
+    "!include_dir_named scalar",
+    "!include scalar",
+    "!secret scalar"
+  ],
+  "[yaml]": {
+    "editor.autoIndent": "full",
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": true
     }
+  },
+  "[home-assistant]": {
+    "editor.autoIndent": "full",
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "yaml.format.enable": true
 }
