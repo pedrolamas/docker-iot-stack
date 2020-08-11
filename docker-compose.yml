@@ -16,9 +16,6 @@ services:
       - "./adguardhome/conf:/opt/adguardhome/conf"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
-    dns:
-      - 127.0.0.1
-      - 1.1.1.1
 
   nginx:
     depends_on:
@@ -27,6 +24,7 @@ services:
       - grafana
       - portainer
       - esphome
+      - vscode
     image: nginx
     restart: unless-stopped
     networks:
@@ -162,6 +160,8 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
+    command: >
+      --no-auth --no-analytics
     dns: 10.0.0.3
 
   esphome:
@@ -192,7 +192,6 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
     env_file: ./acme.sh/docker/secrets.env
-    command: daemon
     environment:
       - DEPLOY_DOCKER_CONTAINER_LABEL=sh.acme.target
       - DEPLOY_DOCKER_CONTAINER_KEY_FILE=/etc/nginx/le-certs/key.pem
@@ -200,21 +199,23 @@ services:
       - DEPLOY_DOCKER_CONTAINER_CA_FILE="/etc/nginx/le-certs/ca.pem"
       - DEPLOY_DOCKER_CONTAINER_FULLCHAIN_FILE="/etc/nginx/le-certs/full.pem"
       - DEPLOY_DOCKER_CONTAINER_RELOAD_CMD="service nginx force-reload"
+    command: >
+      daemon
     dns: 10.0.0.3
 
   vscode:
     depends_on:
-      - homeassistant
+      - adguardhome
     image: codercom/code-server
     restart: unless-stopped
     networks:
       backbone:
         ipv4_address: 10.0.0.14
-    ports:
-      - "8080:8080"
     volumes:
       - "./vscode/data:/home/coder/.local/share/code-server"
       - "./:/home/coder/project"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
     env_file: ./vscode/docker/secrets.env
     command: >
       --auth none --disable-telemetry project
