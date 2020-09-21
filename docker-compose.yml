@@ -97,9 +97,9 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
     # environment:
-    #   - DEBUG=*
+    #   - DEBUG=zigbee-herdsman*
     devices:
-       - "/dev/ttyACM0:/dev/ttyACM0"
+      - "/dev/ttyACM0:/dev/ttyACM0"
     dns: 10.0.0.3
 
   telegraf:
@@ -112,8 +112,16 @@ services:
         ipv4_address: 10.0.0.8
     volumes:
       - "./telegraf/config/telegraf.conf:/etc/telegraf/telegraf.conf:ro"
+      - "/:/hostfs:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
+    environment:
+      - HOST_MOUNT_PREFIX=/hostfs
+      - HOST_ETC=/hostfs/etc
+      - HOST_PROC=/hostfs/proc
+      - HOST_SYS=/hostfs/sys
+      - HOST_VAR=/hostfs/var
+      - HOST_RUN=/hostfs/run
     dns: 10.0.0.3
 
   mariadb:
@@ -125,6 +133,7 @@ services:
       backbone:
         ipv4_address: 10.0.0.9
     volumes:
+      - "./mariadb/config:/etc/mysql/conf.d"
       - "./mariadb/data:/var/lib/mysql"
       - "./mariadb/secrets:/var/lib/secrets:ro"
       - "/etc/localtime:/etc/localtime:ro"
@@ -174,14 +183,12 @@ services:
       - "./esphome/config:/config"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
-    environment:
-      - ESPHOME_DASHBOARD_USE_PING=true
     dns: 10.0.0.3
 
   acme.sh:
     depends_on:
       - adguardhome
-    image: guillaumedsde/acme.sh
+    image: neilpang/acme.sh
     restart: unless-stopped
     networks:
       backbone:
@@ -224,6 +231,8 @@ services:
 networks:
   backbone:
     driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: backbone
     ipam:
       config:
         - subnet: 10.0.0.0/27

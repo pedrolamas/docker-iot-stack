@@ -2,7 +2,7 @@
 
 This is personal docker configuration currently up and running inside a [NanoPi NEO2](https://www.friendlyarm.com/index.php?route=product/product&product_id=180) small board computer (SBC).
 
-My NanoPI is currently running [Armbian Bionic](https://www.armbian.com/nanopi-neo-2/).
+My NanoPI is currently running [Armbian Buster](https://www.armbian.com/nanopi-neo-2/).
 
 To install docker, please use the [convenience script](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-convenience-script).
 
@@ -34,12 +34,6 @@ Home Assistant is an open source home automation tool that puts local control an
 
 * Image: [homeassistant/home-assistant](https://hub.docker.com/r/homeassistant/home-assistant)
 
-### Node-RED
-
-Node-RED is a programming tool for wiring together hardware devices, APIs and online services in new and interesting ways.
-
-* Image: [nodered/node-red](https://hub.docker.com/r/nodered/node-red)
-
 ### Eclipse Mosquitto
 
 Eclipse Mosquitto is an open source implementation of a server for version 3.1 and 3.1.1 of the MQTT protocol.
@@ -68,8 +62,25 @@ MariaDB is a community-developed fork of MySQL intended to remain free under the
 
 Grafana is the open source analytics and monitoring solution for every database.
 
-* Image: [grafana/grafana](grafana/grafana:7.0.0-beta1)
-  Tag: 7.0.0-beta1
+* Image: [grafana/grafana](https://hub.docker.com/r/grafana/grafana)
+
+### ESPHome
+
+ESPHome is a system to control your ESP8266/ESP32 by simple yet powerful configuration files and control them remotely through Home Automation systems.
+
+* Image: [esphome/esphome-aarch64](https://hub.docker.com/r/esphome/esphome-aarch64)
+
+### ACME.sh
+
+An ACME protocol client written purely in Shell (Unix shell) language.
+
+* Image: [neilpang/acme.sh](https://hub.docker.com/r/neilpang/acme.sh)
+
+### code-server
+
+Run VS Code on any machine anywhere and access it through the browser.
+
+* Image: [codercom/code-server](https://hub.docker.com/r/codercom/code-server)
 
 ### Portainer
 
