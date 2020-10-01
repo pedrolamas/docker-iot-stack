@@ -38,14 +38,14 @@ services:
       - "homeassistant:172.17.0.1"
       - "esphome:172.17.0.1"
     volumes:
-      - "./nginx/etc-nginx/nginx.template:/etc/nginx/nginx.template:ro"
+      - "./nginx/etc-nginx-templates:/etc/nginx/templates"
       - "./nginx/etc-nginx-cf-certs:/etc/nginx/cf-certs"
       - "./nginx/etc-nginx-le-certs:/etc/nginx/le-certs"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
     env_file: ./nginx/docker/secrets.env
-    command: >
-      sh -c "envsubst \"`env | awk -F = '{printf \" $$%s\", $$1}'`\" < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
+    environment:
+      - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
     dns: 10.0.0.3
     labels:
       - sh.acme.target
@@ -169,7 +169,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
-    command: >
+    command: >-
       --no-auth --no-analytics
     dns: 10.0.0.3
 
@@ -206,7 +206,7 @@ services:
       - DEPLOY_DOCKER_CONTAINER_CA_FILE="/etc/nginx/le-certs/ca.pem"
       - DEPLOY_DOCKER_CONTAINER_FULLCHAIN_FILE="/etc/nginx/le-certs/full.pem"
       - DEPLOY_DOCKER_CONTAINER_RELOAD_CMD="service nginx force-reload"
-    command: >
+    command: >-
       daemon
     dns: 10.0.0.3
 
@@ -224,7 +224,7 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
     env_file: ./vscode/docker/secrets.env
-    command: >
+    command: >-
       --auth none --disable-telemetry project
     dns: 10.0.0.3
 

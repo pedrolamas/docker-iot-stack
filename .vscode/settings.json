@@ -1,7 +1,7 @@
 {
   "files.associations": {
     "**/homeassistant/config/**/*.yaml": "home-assistant",
-    "nginx.template": "nginx"
+    "**/nginx/**/*.template": "nginx"
   },
   "files.watcherExclude": {
     ".nfs**": true,

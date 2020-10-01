@@ -12,6 +12,10 @@ advanced:
   log_level: warn
   log_output:
     - console
+frontend:
+  port: 8080
+experimental:
+  new_api: true
 devices:
   '0x00158d0002c12756':
     friendly_name: MasterBedroomClimate

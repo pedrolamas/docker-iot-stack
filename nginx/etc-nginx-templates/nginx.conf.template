@@ -49,6 +49,9 @@ http {
   upstream vscode-upstream {
     server vscode:8080;
   }
+  upstream zigbee2mqtt-upstream {
+    server zigbee2mqtt:8080;
+  }
 
   sendfile on;
   tcp_nopush on;
@@ -61,6 +64,12 @@ http {
   gzip_min_length 1024;
   gzip_proxied expired no-cache no-store private auth;
   gzip_types text/plain text/css application/javascript application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+  log_format vhost '$host $remote_addr - $remote_user [$time_local] '
+                   '"$request" $status $body_bytes_sent '
+                   '"$http_referer" "$http_user_agent"';
+
+  access_log /var/log/nginx/access.log vhost;
 
   server_names_hash_bucket_size 128;
   server_tokens off;
@@ -176,6 +185,16 @@ http {
 
     location / {
       proxy_pass http://vscode-upstream/;
+    }
+  }
+
+  server {
+    include le-certs/nginx-server.conf;
+
+    server_name zigbee2mqtt.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    location / {
+      proxy_pass http://zigbee2mqtt-upstream/;
     }
   }
 }
