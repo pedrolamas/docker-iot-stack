@@ -1,5 +1,10 @@
 # NanoPi NEO2 Docker Configuration
 
+![Project Maintenance](https://img.shields.io/maintenance/yes/2020.svg)
+[![License](https://img.shields.io/github/license/PedroLamas/nanopineo2-docker-config.svg)](https://github.com/PedroLamas/nanopineo2-docker-config/blob/master/LICENSE)
+
+[![Twitter Follow](https://img.shields.io/twitter/follow/pedrolamas?style=social)](https://twitter.com/pedrolamas)
+
 This is personal docker configuration currently up and running inside a [NanoPi NEO2](https://www.friendlyarm.com/index.php?route=product/product&product_id=180) small board computer (SBC).
 
 My NanoPI is currently running [Armbian Buster](https://www.armbian.com/nanopi-neo-2/).
