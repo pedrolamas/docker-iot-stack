@@ -115,6 +115,7 @@ services:
       - "/:/hostfs:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
+    env_file: ./telegraf/docker/secrets.env
     environment:
       - HOST_MOUNT_PREFIX=/hostfs
       - HOST_ETC=/hostfs/etc
