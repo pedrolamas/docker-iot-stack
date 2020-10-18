@@ -1,7 +1,7 @@
 # NanoPi NEO2 Docker Configuration
 
 ![Project Maintenance](https://img.shields.io/maintenance/yes/2020.svg)
-[![License](https://img.shields.io/github/license/PedroLamas/nanopineo2-docker-config.svg)](https://github.com/PedroLamas/nanopineo2-docker-config/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/pedrolamas/nanopineo2-docker-config.svg)](https://github.com/pedrolamas/nanopineo2-docker-config/blob/master/LICENSE)
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/pedrolamas?style=social)](https://twitter.com/pedrolamas)
 
