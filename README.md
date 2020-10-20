@@ -1,9 +1,9 @@
 # NanoPi NEO2 Docker Configuration
 
-![Project Maintenance](https://img.shields.io/maintenance/yes/2020.svg)
-[![License](https://img.shields.io/github/license/pedrolamas/nanopineo2-docker-config.svg)](https://github.com/pedrolamas/nanopineo2-docker-config/blob/master/LICENSE)
+[![Project Maintenance](https://img.shields.io/maintenance/yes/2020.svg)](https://github.com/pedrolamas/nanopineo2-docker-config 'GitHub Repository')
+[![License](https://img.shields.io/github/license/pedrolamas/nanopineo2-docker-config.svg)](https://github.com/pedrolamas/nanopineo2-docker-config/blob/master/LICENSE 'License')
 
-[![Twitter Follow](https://img.shields.io/twitter/follow/pedrolamas?style=social)](https://twitter.com/pedrolamas)
+[![Twitter Follow](https://img.shields.io/twitter/follow/pedrolamas?style=social)](https://twitter.com/pedrolamas '@pedrolamas')
 
 This is personal docker configuration currently up and running inside a [NanoPi NEO2](https://www.friendlyarm.com/index.php?route=product/product&product_id=180) small board computer (SBC).
 
@@ -92,3 +92,7 @@ Run VS Code on any machine anywhere and access it through the browser.
 Build and manage your Docker environments with ease today.
 
 * Image: [portainer/portainer](https://hub.docker.com/r/portainer/portainer)
+
+## License
+
+MIT
