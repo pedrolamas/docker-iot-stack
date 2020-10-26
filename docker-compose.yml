@@ -136,11 +136,9 @@ services:
     volumes:
       - "./mariadb/config:/etc/mysql/conf.d"
       - "./mariadb/data:/var/lib/mysql"
-      - "./mariadb/secrets:/var/lib/secrets:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
-    environment:
-      - MYSQL_ROOT_PASSWORD_FILE=/var/lib/secrets/mysql-root-password
+    env_file: ./mariadb/docker/secrets.env
     dns: 10.0.0.3
 
   grafana:
