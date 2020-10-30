@@ -52,6 +52,18 @@ http {
   upstream zigbee2mqtt-upstream {
     server zigbee2mqtt:8080;
   }
+  upstream transmission-upstream {
+    server wireguard:9091;
+  }
+  upstream jackett-upstream {
+    server wireguard:9117;
+  }
+  upstream sonarr-upstream {
+    server wireguard:8989;
+  }
+  upstream radarr-upstream {
+    server wireguard:7878;
+  }
 
   sendfile on;
   tcp_nopush on;
@@ -195,6 +207,48 @@ http {
 
     location / {
       proxy_pass http://zigbee2mqtt-upstream/;
+    }
+  }
+
+  server {
+    include le-certs/nginx-server.conf;
+
+    server_name transmission.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    location / {
+      proxy_pass http://transmission-upstream/;
+    }
+  }
+
+  server {
+    include le-certs/nginx-server.conf;
+
+    server_name jackett.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    proxy_set_header X-Forwarded-Host $http_host;
+
+    location / {
+      proxy_pass http://jackett-upstream/;
+    }
+  }
+
+  server {
+    include le-certs/nginx-server.conf;
+
+    server_name sonarr.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    location / {
+      proxy_pass http://sonarr-upstream/;
+    }
+  }
+
+  server {
+    include le-certs/nginx-server.conf;
+
+    server_name radarr.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    location / {
+      proxy_pass http://radarr-upstream/;
     }
   }
 }

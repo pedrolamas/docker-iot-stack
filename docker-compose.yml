@@ -227,6 +227,89 @@ services:
       --auth none --disable-telemetry project
     dns: 10.0.0.3
 
+  wireguard:
+    image: linuxserver/wireguard
+    restart: unless-stopped
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.15
+    volumes:
+      - "./wireguard/config:/config"
+      - "/lib/modules:/lib/modules:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    environment:
+      - PUID=1000
+      - PGID=1000
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+
+  transmission:
+    depends_on:
+      - wireguard
+    image: linuxserver/transmission
+    restart: unless-stopped
+    network_mode: service:wireguard
+    volumes:
+      - "./transmission/config:/config"
+      - "./downloads:/downloads"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    environment:
+      - PUID=1000
+      - PGID=1000
+
+  jackett:
+    depends_on:
+      - wireguard
+    image: linuxserver/jackett
+    restart: unless-stopped
+    network_mode: service:wireguard
+    volumes:
+      - "./jackett/config:/config"
+      - "./downloads:/downloads"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - AUTO_UPDATE=true
+
+  sonarr:
+    depends_on:
+      - wireguard
+    image: linuxserver/sonarr
+    restart: unless-stopped
+    network_mode: service:wireguard
+    volumes:
+      - "./sonarr/config:/config"
+      - "./downloads:/downloads"
+      - "/mnt/media/TV\ Shows:/tv"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    environment:
+      - PUID=1000
+      - PGID=1000
+
+  radarr:
+    depends_on:
+      - wireguard
+    image: linuxserver/radarr
+    restart: unless-stopped
+    network_mode: service:wireguard
+    volumes:
+      - "./radarr/config:/config"
+      - "./downloads:/downloads"
+      - "/mnt/media/Movies:/movies"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    environment:
+      - PUID=1000
+      - PGID=1000
+
 networks:
   backbone:
     driver: bridge

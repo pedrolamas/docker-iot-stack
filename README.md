@@ -93,6 +93,36 @@ Build and manage your Docker environments with ease today.
 
 * Image: [portainer/portainer](https://hub.docker.com/r/portainer/portainer)
 
+### Wireguard
+
+WireGuard® is an extremely simple yet fast and modern VPN that utilizes state-of-the-art cryptography.
+
+* Image: [linuxserver/wireguard](https://hub.docker.com/r/linuxserver/wireguard)
+
+### Transmission
+
+Transmission is a cross-platform BitTorrent client.
+
+* Image: [linuxserver/transmission](https://hub.docker.com/r/linuxserver/transmission)
+
+### Jackett
+
+Jackett works as a proxy server: it translates queries from apps into tracker-site-specific http queries, parses the html response, then sends results back to the requesting software.
+
+* Image: [linuxserver/jackett](https://hub.docker.com/r/linuxserver/jackett)
+
+### Sonarr
+
+Sonarr is a PVR for Usenet and BitTorrent users.
+
+* Image: [linuxserver/sonarr](https://hub.docker.com/r/linuxserver/sonarr)
+
+### Radarr
+
+Radarr is an independent fork of Sonarr reworked for automatically downloading movies via Usenet and BitTorrent.
+
+* Image: [linuxserver/radarr](https://hub.docker.com/r/linuxserver/radarr)
+
 ## License
 
 MIT
