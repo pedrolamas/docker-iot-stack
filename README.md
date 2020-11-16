@@ -1,13 +1,13 @@
-# NanoPi NEO2 Docker Configuration
+# Docker IoT Stack
 
 [![Project Maintenance](https://img.shields.io/maintenance/yes/2020.svg)](https://github.com/pedrolamas/nanopineo2-docker-config 'GitHub Repository')
 [![License](https://img.shields.io/github/license/pedrolamas/nanopineo2-docker-config.svg)](https://github.com/pedrolamas/nanopineo2-docker-config/blob/master/LICENSE 'License')
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/pedrolamas?style=social)](https://twitter.com/pedrolamas '@pedrolamas')
 
-This is personal docker configuration currently up and running inside a [NanoPi NEO2](https://www.friendlyarm.com/index.php?route=product/product&product_id=180) small board computer (SBC).
+This is my personal Docker IoT Stack configuration, currently up and running inside a [NanoPi M4V2](https://www.friendlyarm.com/index.php?route=product/product&product_id=180) small board computer (SBC) with a Sabrent 256GB Rocket NVMe PCIe M.2 2280 SSD.
 
-My NanoPI is currently running [Armbian Buster](https://www.armbian.com/nanopi-neo-2/).
+The NanoPI is running the latest [Armbian OS](https://www.armbian.com/nanopi-m4-v2/).
 
 To install docker, please use the [convenience script](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-convenience-script).
 
