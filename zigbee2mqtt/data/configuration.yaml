@@ -55,5 +55,20 @@ devices:
     friendly_name: KidsBedroomDimmer
   '0x588e81fffe6536a4':
     friendly_name: MasterBedroomDimmer
+  '0x842e14fffe155397':
+    friendly_name: KidsCornerSwitch
+  '0x0017880100e57ef4':
+    friendly_name: Lamp6
+  '0x0017880100e58722':
+    friendly_name: Lamp5
   '0x14b457fffe156c68':
     friendly_name: PIRSensor
+  '0x0017880100ebe30b':
+    friendly_name: Lamp4
+    transition: 1
+groups:
+  '1':
+    friendly_name: KidsCornerGroup
+    devices:
+      - 0x0017880100e58722/11
+      - 0x0017880100e57ef4/11
