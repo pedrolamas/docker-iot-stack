@@ -71,7 +71,7 @@ devices:
     friendly_name: zz_smart_plug_1
 groups:
   '1':
-    friendly_name: KidsCornerGroup
+    friendly_name: kids_corner_group
     devices:
       - 0x0017880100e58722/11
       - 0x0017880100e57ef4/11
