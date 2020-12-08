@@ -9,6 +9,7 @@ advanced:
   pan_id: 6752
   channel: 20
   network_key: '!secret network_key'
+  report: true
   log_level: warn
   log_output:
     - console
@@ -18,54 +19,56 @@ experimental:
   new_api: true
 devices:
   '0x00158d0002c12756':
-    friendly_name: MasterBedroomClimate
+    friendly_name: master_bedroom_climate
   '0x00158d0002e935dd':
-    friendly_name: LivingRoomClimate
+    friendly_name: living_room_climate
   '0x000d6ffffeda2b01':
-    friendly_name: SmartPlug2
+    friendly_name: lower_floor_smart_plug
   '0x000d6ffffec24c99':
-    friendly_name: SmartPlug1
+    friendly_name: living_room_smart_plug
   '0x00158d0002e20b09':
-    friendly_name: BackDoor
+    friendly_name: back_door
   '0x00158d0002bfc3fd':
-    friendly_name: FrontDoor
+    friendly_name: front_door
   '0x00158d00031342a1':
-    friendly_name: FrontDoorMailbox
+    friendly_name: front_door_mailbox
   '0x00158d0002581c83':
-    friendly_name: SmartSwitch
+    friendly_name: smart_switch
   '0x00158d0003130f12':
-    friendly_name: SmartVibrationSensor
+    friendly_name: smart_vibration_sensor
   '0x00158d00025c0460':
-    friendly_name: KidsBedroomClimate
+    friendly_name: kids_bedroom_climate
   '0x00158d000449f059':
-    friendly_name: LowerFloorClimate
+    friendly_name: lower_floor_climate
   '0x000d6f000be640b4':
-    friendly_name: SmartPlug4
+    friendly_name: kids_bedroom_smart_plug
   '0x000d6f000be64a15':
-    friendly_name: SmartPlug5
+    friendly_name: washing_machine_smart_plug
   '0x000d6f000b7a6dad':
-    friendly_name: SmartPlug3
+    friendly_name: zz_smart_plug_2
   '0x00158d000303ffbd':
-    friendly_name: LaundryRoomClimate
+    friendly_name: laundry_room_climate
   '0x001e5e0902145f37':
-    friendly_name: SmartPlug6
+    friendly_name: zz_smart_plug_3
   '0x000d6f000bcb5e57':
-    friendly_name: SmartPlug7
+    friendly_name: master_bedroom_smart_plug
   '0x588e81fffe6536aa':
-    friendly_name: KidsBedroomDimmer
+    friendly_name: kids_bedroom_dimmer
   '0x588e81fffe6536a4':
-    friendly_name: MasterBedroomDimmer
+    friendly_name: master_bedroom_dimmer
   '0x842e14fffe155397':
-    friendly_name: KidsCornerSwitch
+    friendly_name: kids_corner_switch
   '0x0017880100e57ef4':
-    friendly_name: Lamp6
+    friendly_name: lamp_6
   '0x0017880100e58722':
-    friendly_name: Lamp5
+    friendly_name: lamp_5
   '0x14b457fffe156c68':
-    friendly_name: PIRSensor
+    friendly_name: master_bedroom_pir_sensor
   '0x0017880100ebe30b':
-    friendly_name: Lamp4
+    friendly_name: lamp_4
     transition: 1
+  '0xec1bbdfffe3dc3d7':
+    friendly_name: zz_smart_plug_1
 groups:
   '1':
     friendly_name: KidsCornerGroup
