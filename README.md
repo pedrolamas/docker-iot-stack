@@ -1,6 +1,6 @@
 # Docker IoT Stack
 
-[![Project Maintenance](https://img.shields.io/maintenance/yes/2020.svg)](https://github.com/pedrolamas/nanopineo2-docker-config 'GitHub Repository')
+[![Project Maintenance](https://img.shields.io/maintenance/yes/2021.svg)](https://github.com/pedrolamas/nanopineo2-docker-config 'GitHub Repository')
 [![License](https://img.shields.io/github/license/pedrolamas/nanopineo2-docker-config.svg)](https://github.com/pedrolamas/nanopineo2-docker-config/blob/master/LICENSE 'License')
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/pedrolamas?style=social)](https://twitter.com/pedrolamas '@pedrolamas')

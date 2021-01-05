@@ -4,8 +4,9 @@ mqtt:
   base_topic: zigbee2mqtt
   server: 'mqtt://10.0.0.6'
 serial:
-  port: /dev/ttyACM0
+  port: /dev/ttyUSB0
 advanced:
+  rtscts: false
   pan_id: 6752
   channel: 20
   network_key: '!secret network_key'
@@ -22,8 +23,6 @@ devices:
     friendly_name: master_bedroom_climate
   '0x00158d0002e935dd':
     friendly_name: living_room_climate
-  '0x000d6ffffeda2b01':
-    friendly_name: lower_floor_smart_plug
   '0x000d6ffffec24c99':
     friendly_name: living_room_smart_plug
   '0x00158d0002e20b09':
@@ -40,18 +39,8 @@ devices:
     friendly_name: kids_bedroom_climate
   '0x00158d000449f059':
     friendly_name: lower_floor_climate
-  '0x000d6f000be640b4':
-    friendly_name: kids_bedroom_smart_plug
-  '0x000d6f000be64a15':
-    friendly_name: washing_machine_smart_plug
-  '0x000d6f000b7a6dad':
-    friendly_name: zz_smart_plug_2
   '0x00158d000303ffbd':
     friendly_name: laundry_room_climate
-  '0x001e5e0902145f37':
-    friendly_name: zz_smart_plug_3
-  '0x000d6f000bcb5e57':
-    friendly_name: master_bedroom_smart_plug
   '0x588e81fffe6536aa':
     friendly_name: kids_bedroom_dimmer
   '0x588e81fffe6536a4':
@@ -68,7 +57,11 @@ devices:
     friendly_name: lamp_4
     transition: 1
   '0xec1bbdfffe3dc3d7':
-    friendly_name: zz_smart_plug_1
+    friendly_name: lower_floor_smart_plug
+  '0xec1bbdfffe41a2ff':
+    friendly_name: master_bedroom_smart_plug
+  '0xec1bbdfffe3f911d':
+    friendly_name: kids_bedroom_smart_plug
 groups:
   '1':
     friendly_name: kids_corner_group

@@ -99,7 +99,7 @@ services:
     # environment:
     #   - DEBUG=zigbee-herdsman*
     devices:
-      - "/dev/ttyACM0:/dev/ttyACM0"
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
     dns: 10.0.0.3
 
   telegraf:
