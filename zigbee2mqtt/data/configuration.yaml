@@ -20,51 +20,53 @@ experimental:
   new_api: true
 devices:
   '0x00158d0002c12756':
-    friendly_name: master_bedroom_climate
+    friendly_name: Master Bedroom Climate
   '0x00158d0002e935dd':
-    friendly_name: living_room_climate
+    friendly_name: Living Room Climate
   '0x000d6ffffec24c99':
-    friendly_name: living_room_smart_plug
+    friendly_name: Living Room Smart Plug
   '0x00158d0002e20b09':
-    friendly_name: back_door
+    friendly_name: Back Door
   '0x00158d0002bfc3fd':
-    friendly_name: front_door
+    friendly_name: Front Door
   '0x00158d00031342a1':
-    friendly_name: front_door_mailbox
+    friendly_name: Front Door Mailbox
   '0x00158d0002581c83':
-    friendly_name: smart_switch
+    friendly_name: Smart Switch
   '0x00158d0003130f12':
-    friendly_name: smart_vibration_sensor
+    friendly_name: Smart Vibration Sensor
   '0x00158d00025c0460':
-    friendly_name: kids_bedroom_climate
+    friendly_name: Kids Bedroom Climate
   '0x00158d000449f059':
-    friendly_name: lower_floor_climate
+    friendly_name: Lower Floor Climate
   '0x00158d000303ffbd':
-    friendly_name: laundry_room_climate
+    friendly_name: Laundry Room Climate
   '0x588e81fffe6536aa':
-    friendly_name: kids_bedroom_dimmer
+    friendly_name: Kids Bedroom Dimmer
   '0x588e81fffe6536a4':
-    friendly_name: master_bedroom_dimmer
+    friendly_name: Master Bedroom Dimmer
   '0x842e14fffe155397':
-    friendly_name: kids_corner_switch
+    friendly_name: Kids Corner Switch
   '0x0017880100e57ef4':
-    friendly_name: lamp_6
+    friendly_name: Lamp 6
   '0x0017880100e58722':
-    friendly_name: lamp_5
+    friendly_name: Lamp 5
   '0x14b457fffe156c68':
-    friendly_name: master_bedroom_pir_sensor
+    friendly_name: Master Bedroom PIR Sensor
   '0x0017880100ebe30b':
-    friendly_name: lamp_4
+    friendly_name: Lamp 4
     transition: 1
   '0xec1bbdfffe3dc3d7':
-    friendly_name: lower_floor_smart_plug
+    friendly_name: Lower Floor Smart Plug
   '0xec1bbdfffe41a2ff':
-    friendly_name: master_bedroom_smart_plug
+    friendly_name: Master Bedroom Smart Plug
   '0xec1bbdfffe3f911d':
-    friendly_name: kids_bedroom_smart_plug
+    friendly_name: Kids Bedroom Smart Plug
+  '0xec1bbdfffe3bed9a':
+    friendly_name: Washing Machine Smart Plug
 groups:
   '1':
-    friendly_name: kids_corner_group
+    friendly_name: Kids Corner Group
     devices:
       - 0x0017880100e58722/11
       - 0x0017880100e57ef4/11
