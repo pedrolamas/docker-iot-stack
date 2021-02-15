@@ -48,7 +48,6 @@
     "**/.HA_VERSION": true,
     "**/*.db-shm": true,
     "**/*.db-wal": true,
-    "**/*.db": true,
     "**/deps/**": true
   },
   "yaml.customTags": [

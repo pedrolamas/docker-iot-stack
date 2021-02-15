@@ -75,11 +75,11 @@ services:
         ipv4_address: 10.0.0.6
     ports:
       - "1883:1883"
+      - "1884:1884"
       - "9001:9001"
-#    volumes:
-#      - "./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro"
-#      - "./mosquitto/config/password_file:/mosquitto/config/password_file"
-#      - "./mosquitto/config/acl_file:/mosquitto/config/acl_file"
+    volumes:
+      - "./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf"
+      - "./mosquitto/config/password_file:/mosquitto/config/password_file"
     dns: 10.0.0.3
 
   zigbee2mqtt:

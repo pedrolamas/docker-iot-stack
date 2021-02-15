@@ -3,6 +3,8 @@ permit_join: false
 mqtt:
   base_topic: zigbee2mqtt
   server: 'mqtt://10.0.0.6'
+  user: '!secret user'
+  password: '!secret password'
 serial:
   port: /dev/ttyUSB0
 advanced:
@@ -10,7 +12,6 @@ advanced:
   pan_id: 6752
   channel: 20
   network_key: '!secret network_key'
-  report: true
   log_level: warn
   log_output:
     - console
