@@ -10,6 +10,7 @@ services:
     ports:
       - "53:53/tcp"
       - "53:53/udp"
+      - "784:784"
       - "853:853"
     volumes:
       - "./adguardhome/work:/opt/adguardhome/work"
@@ -35,8 +36,8 @@ services:
       - "443:443"
       - "21443:21443"
     extra_hosts:
-      - "homeassistant:172.17.0.1"
-      - "esphome:172.17.0.1"
+      - "homeassistant:10.0.0.1"
+      - "esphome:10.0.0.1"
     volumes:
       - "./nginx/etc-nginx-templates:/etc/nginx/templates"
       - "./nginx/etc-nginx-cf-certs:/etc/nginx/cf-certs"
@@ -79,6 +80,7 @@ services:
       - "9001:9001"
     volumes:
       - "./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf"
+      - "./mosquitto/data:/mosquitto/data"
       - "./mosquitto/config/password_file:/mosquitto/config/password_file"
     dns: 10.0.0.3
 
@@ -158,7 +160,7 @@ services:
   portainer:
     depends_on:
       - adguardhome
-    image: portainer/portainer
+    image: portainer/portainer-ce
     restart: unless-stopped
     networks:
       backbone:
@@ -168,8 +170,6 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
-    command: >-
-      --no-auth --no-analytics
     dns: 10.0.0.3
 
   esphome:
