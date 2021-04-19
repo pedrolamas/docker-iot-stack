@@ -57,9 +57,14 @@ services:
       - mosquitto
     image: homeassistant/home-assistant
     restart: unless-stopped
+    healthcheck:
+      test: >-
+        curl -f http://localhost:8123 || exit 1
     network_mode: host
     volumes:
       - "./homeassistant/config:/config"
+      - "/mnt/media/TV\ Shows:/media/tv:ro"
+      - "/mnt/media/Movies:/media/movies:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
     environment:
@@ -255,7 +260,7 @@ services:
     network_mode: service:wireguard
     volumes:
       - "./transmission/config:/config"
-      - "./downloads:/downloads"
+      - "../downloads:/downloads"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
     environment:
@@ -270,7 +275,7 @@ services:
     network_mode: service:wireguard
     volumes:
       - "./jackett/config:/config"
-      - "./downloads:/downloads"
+      - "../downloads:/downloads"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
     environment:
@@ -286,7 +291,7 @@ services:
     network_mode: service:wireguard
     volumes:
       - "./sonarr/config:/config"
-      - "./downloads:/downloads"
+      - "../downloads:/downloads"
       - "/mnt/media/TV\ Shows:/tv"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
@@ -302,7 +307,7 @@ services:
     network_mode: service:wireguard
     volumes:
       - "./radarr/config:/config"
-      - "./downloads:/downloads"
+      - "../downloads:/downloads"
       - "/mnt/media/Movies:/movies"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
