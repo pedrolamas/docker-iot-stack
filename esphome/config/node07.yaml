@@ -1,0 +1,61 @@
+substitutions:
+  esphome_name: node07
+
+esphome:
+  name: ${esphome_name}
+  platform: ESP32
+  board: esp-wrover-kit
+
+wifi:
+  networks:
+    - ssid: !secret wifi_ssid
+      password: !secret wifi_password
+      hidden: true
+  domain: !secret wifi_domain
+  fast_connect: true
+  reboot_timeout: 3min
+  ap:
+    ssid: "${esphome_name} Fallback Hotspot"
+    password: !secret wifi_ap_password
+    
+esp32_ble_tracker:
+
+sensor:
+  - platform: xiaomi_hhccjcy01
+    mac_address: 'C4:7C:8D:6B:F6:EE'
+    temperature:
+      name: "${esphome_name} Plant 1 Temperature"
+    moisture:
+      name: "${esphome_name} Plant 1 Moisture"
+    illuminance:
+      name: "${esphome_name} Plant 1 Illuminance"
+    conductivity:
+      name: "${esphome_name} Plant 1 Soil Conductivity"
+    battery_level:
+      name: "${esphome_name} Plant 1 Battery Level"
+  - platform: xiaomi_hhccjcy01
+    mac_address: 'C4:7C:8D:6B:F4:91'
+    temperature:
+      name: "${esphome_name} Plant 2 Temperature"
+    moisture:
+      name: "${esphome_name} Plant 2 Moisture"
+    illuminance:
+      name: "${esphome_name} Plant 2 Illuminance"
+    conductivity:
+      name: "${esphome_name} Plant 2 Soil Conductivity"
+    battery_level:
+      name: "${esphome_name} Plant 2 Battery Level"
+
+switch:
+  - platform: restart
+    name: "${esphome_name} Restart"
+    
+captive_portal:
+
+logger:
+
+api:
+  password: !secret api_password
+
+ota:
+  password: !secret ota_password

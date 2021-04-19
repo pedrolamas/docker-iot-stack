@@ -1,0 +1,85 @@
+substitutions:
+  esphome_name: node02
+
+esphome:
+  name: ${esphome_name}
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  networks:
+    - ssid: !secret wifi_ssid
+      password: !secret wifi_password
+      hidden: true
+  domain: !secret wifi_domain
+  fast_connect: true
+  reboot_timeout: 3min
+  ap:
+    ssid: "${esphome_name} Fallback Hotspot"
+    password: !secret wifi_ap_password
+
+binary_sensor:
+  - platform: gpio
+    id: gpio_d6
+    pin:
+      number: D1
+      inverted: true
+    filters:
+      - delayed_off: 10ms
+      - lambda: |-
+          if (id(led_enabled).state) {
+            return x;
+          } else {
+            return false;
+          }
+    on_press:
+      - output.turn_on: gpio_d7
+    on_release:
+      - output.turn_off: gpio_d7
+
+output:
+  - platform: gpio
+    id: gpio_d7
+    pin: D2
+
+sensor:
+  - platform: pulse_counter
+    id: pulse_counter_d1
+    name: "${esphome_name} Power Meter"
+    pin: D1
+    unit_of_measurement: "kW"
+    accuracy_decimals: 3
+    count_mode:
+      rising_edge: DISABLE
+      falling_edge: INCREMENT
+    internal_filter: 1000us
+    filters:
+      - multiply: 0.075
+    total:
+      name: "${esphome_name} Total Pulses"
+      
+  - platform: total_daily_energy
+    name: "${esphome_name} Total Daily Energy"
+    power_id: pulse_counter_d1
+    
+switch:
+  - platform: restart
+    name: "${esphome_name} Restart"
+    
+  - platform: template
+    name: "${esphome_name} LED enabled"
+    id: led_enabled
+    optimistic: true
+
+time:
+  - platform: sntp
+
+captive_portal:
+
+logger:
+
+api:
+  password: !secret api_password
+
+ota:
+  password: !secret ota_password
