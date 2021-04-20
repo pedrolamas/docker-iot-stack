@@ -34,6 +34,7 @@ devices:
     friendly_name: Front Door Mailbox
   '0x00158d0002581c83':
     friendly_name: Smart Switch
+    legacy: false
   '0x00158d0003130f12':
     friendly_name: Smart Vibration Sensor
   '0x00158d00025c0460':
@@ -48,6 +49,7 @@ devices:
     friendly_name: Master Bedroom Dimmer
   '0x842e14fffe155397':
     friendly_name: Kids Corner Switch
+    legacy: false
   '0x0017880100e57ef4':
     friendly_name: Lamp 6
   '0x0017880100e58722':
