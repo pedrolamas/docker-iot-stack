@@ -20,7 +20,7 @@ wifi:
 
 binary_sensor:
   - platform: gpio
-    id: gpio_d6
+    id: binary_sensor_gpio_d1
     pin:
       number: D1
       inverted: true
@@ -33,39 +33,41 @@ binary_sensor:
             return false;
           }
     on_press:
-      - output.turn_on: gpio_d7
+      - output.turn_on: output_gpio_d7
     on_release:
-      - output.turn_off: gpio_d7
+      - output.turn_off: output_gpio_d7
 
 output:
   - platform: gpio
-    id: gpio_d7
+    id: output_gpio_d7
     pin: D2
 
 sensor:
-  - platform: pulse_counter
-    id: pulse_counter_d1
+  - platform: pulse_meter
+    id: pulse_meter_d1
     name: "${esphome_name} Power Meter"
     pin: D1
     unit_of_measurement: "kW"
     accuracy_decimals: 3
-    count_mode:
-      rising_edge: DISABLE
-      falling_edge: INCREMENT
-    internal_filter: 1000us
+    internal_filter: 100ms
+    timeout: 2min
     filters:
       - multiply: 0.075
     total:
-      name: "${esphome_name} Total Pulses"
-      
+      name: "${esphome_name} Total Energy"
+      unit_of_measurement: "kWh"
+      accuracy_decimals: 3
+      filters:
+        - multiply: 0.001
+
   - platform: total_daily_energy
     name: "${esphome_name} Total Daily Energy"
-    power_id: pulse_counter_d1
-    
+    power_id: pulse_meter_d1
+
 switch:
   - platform: restart
     name: "${esphome_name} Restart"
-    
+
   - platform: template
     name: "${esphome_name} LED enabled"
     id: led_enabled
