@@ -17,8 +17,6 @@ advanced:
     - console
 frontend:
   port: 8080
-experimental:
-  new_api: true
 devices:
   '0x00158d0002c12756':
     friendly_name: Master Bedroom Climate
@@ -67,9 +65,20 @@ devices:
     friendly_name: Kids Bedroom Smart Plug
   '0xec1bbdfffe3bed9a':
     friendly_name: Washing Machine Smart Plug
+  '0x842e14fffe7c5912':
+    friendly_name: Lamp 7
+  '0x804b50fffef75f28':
+    friendly_name: Sewing Corner Switch
+    legacy: false
+  '0x804b50fffee8f515':
+    friendly_name: Lamp 8
 groups:
   '1':
     friendly_name: Kids Corner Group
     devices:
       - 0x0017880100e58722/11
       - 0x0017880100e57ef4/11
+  '2':
+    friendly_name: Sewing Corner Group
+    devices:
+      - 0x804b50fffee8f515/1
