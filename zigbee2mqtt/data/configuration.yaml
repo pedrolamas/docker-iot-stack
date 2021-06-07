@@ -72,6 +72,8 @@ devices:
     legacy: false
   '0x804b50fffee8f515':
     friendly_name: Lamp 8
+  '0xd0cf5efffe311aa5':
+    friendly_name: Lamp 3
 groups:
   '1':
     friendly_name: Kids Corner Group
