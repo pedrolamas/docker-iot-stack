@@ -18,51 +18,45 @@ wifi:
     ssid: "${esphome_name} Fallback Hotspot"
     password: !secret wifi_ap_password
 
-binary_sensor:
-  - platform: gpio
-    id: binary_sensor_gpio_d1
-    pin:
-      number: D1
-      inverted: true
-    filters:
-      - delayed_off: 10ms
-      - lambda: |-
-          if (id(led_enabled).state) {
-            return x;
-          } else {
-            return false;
-          }
-    on_press:
-      - output.turn_on: output_gpio_d7
-    on_release:
-      - output.turn_off: output_gpio_d7
-
 output:
   - platform: gpio
     id: output_gpio_d7
     pin: D2
 
+light:
+  - platform: binary
+    id: red_light
+    internal: true
+    output: output_gpio_d7
+
 sensor:
   - platform: pulse_meter
-    id: pulse_meter_d1
     name: "${esphome_name} Power Meter"
     pin: D1
-    unit_of_measurement: "kW"
+    unit_of_measurement: "W"
     accuracy_decimals: 3
     internal_filter: 100ms
     timeout: 2min
+    on_value:
+      then:
+        - if:
+            condition:
+              lambda: 'return id(led_enabled).state;'
+            then:
+              - light.turn_on:
+                  id: red_light
+                  flash_length: 100ms
     filters:
-      - multiply: 0.075
+      - multiply: 75
     total:
       name: "${esphome_name} Total Energy"
       unit_of_measurement: "kWh"
+      last_reset_type: auto
+      state_class: measurement
+      device_class: energy
       accuracy_decimals: 3
       filters:
         - multiply: 0.001
-
-  - platform: total_daily_energy
-    name: "${esphome_name} Total Daily Energy"
-    power_id: pulse_meter_d1
 
 switch:
   - platform: restart
