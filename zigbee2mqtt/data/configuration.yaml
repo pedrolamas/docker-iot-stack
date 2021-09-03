@@ -12,6 +12,7 @@ advanced:
   pan_id: 6752
   channel: 20
   network_key: '!secret network_key'
+  homeassistant_legacy_entity_attributes: false
   log_level: warn
   log_output:
     - console
