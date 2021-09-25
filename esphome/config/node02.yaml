@@ -47,12 +47,11 @@ sensor:
                   id: red_light
                   flash_length: 100ms
     filters:
-      - multiply: 75
+      - multiply: 60
     total:
       name: "${esphome_name} Total Energy"
       unit_of_measurement: "kWh"
-      last_reset_type: auto
-      state_class: measurement
+      state_class: total_increasing
       device_class: energy
       accuracy_decimals: 3
       filters:
