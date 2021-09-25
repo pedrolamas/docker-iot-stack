@@ -75,6 +75,10 @@ devices:
     friendly_name: Lamp 8
   '0xd0cf5efffe311aa5':
     friendly_name: Lamp 3
+  '0x0017880100ebe022':
+    friendly_name: Lamp 2
+  '0x0017880100117838':
+    friendly_name: Lamp 1
 groups:
   '1':
     friendly_name: Kids Corner Group
