@@ -52,6 +52,15 @@ http {
   upstream zigbee2mqtt-upstream {
     server zigbee2mqtt:8080;
   }
+  upstream fluidd-upstream {
+    server fluidd;
+  }
+  upstream ender3v2-apiserver-upstream {
+    server ${NGINX_ENDER3V2_UPSTREAM}:7125;
+  }
+  upstream ender3v2-mjpgstreamer-upstream {
+    server ${NGINX_ENDER3V2_UPSTREAM}:8080;
+  }
   upstream transmission-upstream {
     server wireguard:9091;
   }
@@ -207,6 +216,29 @@ http {
 
     location / {
       proxy_pass http://zigbee2mqtt-upstream/;
+    }
+  }
+
+  server {
+    include le-certs/nginx-server.conf;
+
+    server_name fluidd.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    location / {
+      proxy_pass http://fluidd-upstream/;
+    }
+
+    location /websocket {
+        proxy_pass http://ender3v2-apiserver-upstream/websocket;
+        proxy_read_timeout 86400;
+    }
+
+    location ~ ^/(printer|api|access|machine|server)/ {
+        proxy_pass http://ender3v2-apiserver-upstream$request_uri;
+    }
+
+    location /webcam/ {
+        proxy_pass http://ender3v2-mjpgstreamer-upstream/;
     }
   }
 

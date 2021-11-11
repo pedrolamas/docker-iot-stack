@@ -26,6 +26,7 @@ services:
       - portainer
       - esphome
       - vscode
+      - fluidd
     image: nginx
     restart: unless-stopped
     networks:
@@ -230,6 +231,19 @@ services:
     env_file: ./vscode/docker/secrets.env
     command: >-
       --auth none --disable-telemetry project
+    dns: 10.0.0.3
+
+  fluidd:
+    depends_on:
+      - adguardhome
+    image: cadriel/fluidd
+    restart: unless-stopped
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.16
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
     dns: 10.0.0.3
 
   wireguard:
