@@ -15,8 +15,8 @@ services:
     volumes:
       - "./adguardhome/work:/opt/adguardhome/work"
       - "./adguardhome/conf:/opt/adguardhome/conf"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
+    env_file:
+      - ./common.env
 
   nginx:
     depends_on:
@@ -43,9 +43,9 @@ services:
       - "./nginx/etc-nginx-templates:/etc/nginx/templates"
       - "./nginx/etc-nginx-cf-certs:/etc/nginx/cf-certs"
       - "./nginx/etc-nginx-le-certs:/etc/nginx/le-certs"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-    env_file: ./nginx/docker/secrets.env
+    env_file:
+      - ./common.env
+      - ./nginx/docker/secrets.env
     environment:
       - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
     dns: 10.0.0.3
@@ -66,8 +66,8 @@ services:
       - "./homeassistant/config:/config"
       - "/mnt/media/TV\ Shows:/media/tv:ro"
       - "/mnt/media/Movies:/media/movies:ro"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
+    env_file:
+      - ./common.env
     environment:
       - PYTHONWARNINGS=ignore:Unverified HTTPS request
     dns: 10.0.0.3
@@ -88,6 +88,8 @@ services:
       - "./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf"
       - "./mosquitto/data:/mosquitto/data"
       - "./mosquitto/config/password_file:/mosquitto/config/password_file"
+    env_file:
+      - ./common.env
     dns: 10.0.0.3
 
   zigbee2mqtt:
@@ -102,12 +104,12 @@ services:
       - "./zigbee2mqtt/data:/app/data"
       # - "./zigbee2mqtt/zigbee-herdsman-converters:/app/node_modules/zigbee-herdsman-converters"
       # - "./zigbee2mqtt/homeassistant-extension/homeassistant.js:/app/lib/extension/homeassistant.js"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
     # environment:
     #   - DEBUG=zigbee-herdsman*
     devices:
       - "/dev/ttyUSB0:/dev/ttyUSB0"
+    env_file:
+      - ./common.env
     dns: 10.0.0.3
 
   telegraf:
@@ -121,9 +123,9 @@ services:
     volumes:
       - "./telegraf/config/telegraf.conf:/etc/telegraf/telegraf.conf:ro"
       - "/:/hostfs:ro"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-    env_file: ./telegraf/docker/secrets.env
+    env_file:
+      - ./common.env
+      - ./telegraf/docker/secrets.env
     environment:
       - HOST_MOUNT_PREFIX=/hostfs
       - HOST_ETC=/hostfs/etc
@@ -144,9 +146,9 @@ services:
     volumes:
       - "./mariadb/config:/etc/mysql/conf.d"
       - "./mariadb/data:/var/lib/mysql"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-    env_file: ./mariadb/docker/secrets.env
+    env_file:
+      - ./common.env
+      - ./mariadb/docker/secrets.env
     dns: 10.0.0.3
 
   grafana:
@@ -159,8 +161,8 @@ services:
         ipv4_address: 10.0.0.10
     volumes:
       - "./grafana/data:/var/lib/grafana"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
+    env_file:
+      - ./common.env
     dns: 10.0.0.3
 
   portainer:
@@ -174,8 +176,8 @@ services:
     volumes:
       - "./portainer/data:/data"
       - "/var/run/docker.sock:/var/run/docker.sock"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
+    env_file:
+      - ./common.env
     dns: 10.0.0.3
 
   esphome:
@@ -186,8 +188,8 @@ services:
     network_mode: host
     volumes:
       - "./esphome/config:/config"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
+    env_file:
+      - ./common.env
     dns: 10.0.0.3
 
   acme.sh:
@@ -201,9 +203,9 @@ services:
     volumes:
       - "./acme.sh/data:/acme.sh"
       - "/var/run/docker.sock:/var/run/docker.sock"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-    env_file: ./acme.sh/docker/secrets.env
+    env_file:
+      - ./common.env
+      - ./acme.sh/docker/secrets.env
     environment:
       - DEPLOY_DOCKER_CONTAINER_LABEL=sh.acme.target
       - DEPLOY_DOCKER_CONTAINER_KEY_FILE=/etc/nginx/le-certs/key.pem
@@ -226,9 +228,9 @@ services:
     volumes:
       - "./vscode/data:/home/coder/.local/share/code-server"
       - "./:/home/coder/project"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-    env_file: ./vscode/docker/secrets.env
+    env_file:
+      - ./common.env
+      - ./vscode/docker/secrets.env
     command: >-
       --auth none --disable-telemetry project
     dns: 10.0.0.3
@@ -241,9 +243,8 @@ services:
     networks:
       backbone:
         ipv4_address: 10.0.0.16
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
+    env_file:
+      - ./common.env
     dns: 10.0.0.3
 
   wireguard:
@@ -255,11 +256,9 @@ services:
     volumes:
       - "./wireguard/config:/config"
       - "/lib/modules:/lib/modules:ro"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-    environment:
-      - PUID=1000
-      - PGID=1000
+    env_file:
+      - ./common.env
+      - ./common-linuxserver.env
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
@@ -275,11 +274,9 @@ services:
     volumes:
       - "./transmission/config:/config"
       - "../downloads:/downloads"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-    environment:
-      - PUID=1000
-      - PGID=1000
+    env_file:
+      - ./common.env
+      - ./common-linuxserver.env
 
   jackett:
     depends_on:
@@ -290,11 +287,10 @@ services:
     volumes:
       - "./jackett/config:/config"
       - "../downloads:/downloads"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
+    env_file:
+      - ./common.env
+      - ./common-linuxserver.env
     environment:
-      - PUID=1000
-      - PGID=1000
       - AUTO_UPDATE=true
 
   sonarr:
@@ -307,11 +303,9 @@ services:
       - "./sonarr/config:/config"
       - "../downloads:/downloads"
       - "/mnt/media/TV\ Shows:/tv"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-    environment:
-      - PUID=1000
-      - PGID=1000
+    env_file:
+      - ./common.env
+      - ./common-linuxserver.env
 
   radarr:
     depends_on:
@@ -323,11 +317,9 @@ services:
       - "./radarr/config:/config"
       - "../downloads:/downloads"
       - "/mnt/media/Movies:/movies"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-    environment:
-      - PUID=1000
-      - PGID=1000
+    env_file:
+      - ./common.env
+      - ./common-linuxserver.env
 
 networks:
   backbone:
