@@ -45,7 +45,7 @@ services:
       - "./nginx/etc-nginx-le-certs:/etc/nginx/le-certs"
     env_file:
       - ./common.env
-      - ./nginx/docker/secrets.env
+      - ./nginx/secrets.env
     environment:
       - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
     dns: 10.0.0.3
@@ -125,7 +125,7 @@ services:
       - "/:/hostfs:ro"
     env_file:
       - ./common.env
-      - ./telegraf/docker/secrets.env
+      - ./telegraf/secrets.env
     environment:
       - HOST_MOUNT_PREFIX=/hostfs
       - HOST_ETC=/hostfs/etc
@@ -148,7 +148,7 @@ services:
       - "./mariadb/data:/var/lib/mysql"
     env_file:
       - ./common.env
-      - ./mariadb/docker/secrets.env
+      - ./mariadb/secrets.env
     dns: 10.0.0.3
 
   grafana:
@@ -205,7 +205,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
     env_file:
       - ./common.env
-      - ./acme.sh/docker/secrets.env
+      - ./acme.sh/secrets.env
     environment:
       - DEPLOY_DOCKER_CONTAINER_LABEL=sh.acme.target
       - DEPLOY_DOCKER_CONTAINER_KEY_FILE=/etc/nginx/le-certs/key.pem
@@ -230,7 +230,7 @@ services:
       - "./:/home/coder/project"
     env_file:
       - ./common.env
-      - ./vscode/docker/secrets.env
+      - ./vscode/secrets.env
     command: >-
       --auth none --disable-telemetry project
     dns: 10.0.0.3
