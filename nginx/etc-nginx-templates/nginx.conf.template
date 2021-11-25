@@ -32,45 +32,59 @@ http {
   }
 
   upstream adguardhome-upstream {
+    ip_hash;
     server adguardhome;
   }
   upstream homeassistant-upstream {
+    ip_hash;
     server homeassistant:8123;
   }
   upstream grafana-upstream {
+    ip_hash;
     server grafana:3000;
   }
   upstream portainer-upstream {
+    ip_hash;
     server portainer:9000;
   }
   upstream esphome-upstream {
+    ip_hash;
     server esphome:6052;
   }
   upstream vscode-upstream {
+    ip_hash;
     server vscode:8080;
   }
   upstream zigbee2mqtt-upstream {
+    ip_hash;
     server zigbee2mqtt:8080;
   }
   upstream fluidd-upstream {
+    ip_hash;
     server fluidd;
   }
   upstream ender3v2-apiserver-upstream {
+    ip_hash;
     server ${NGINX_ENDER3V2_UPSTREAM}:7125;
   }
   upstream ender3v2-mjpgstreamer-upstream {
+    ip_hash;
     server ${NGINX_ENDER3V2_UPSTREAM}:8080;
   }
   upstream transmission-upstream {
+    ip_hash;
     server wireguard:9091;
   }
   upstream jackett-upstream {
+    ip_hash;
     server wireguard:9117;
   }
   upstream sonarr-upstream {
+    ip_hash;
     server wireguard:8989;
   }
   upstream radarr-upstream {
+    ip_hash;
     server wireguard:7878;
   }
 
@@ -78,6 +92,8 @@ http {
   tcp_nopush on;
   tcp_nodelay on;
   keepalive_timeout 15;
+
+  client_max_body_size 0;
 
   gzip on;
   gzip_vary on;
