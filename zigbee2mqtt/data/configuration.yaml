@@ -2,7 +2,7 @@ homeassistant: true
 permit_join: false
 mqtt:
   base_topic: zigbee2mqtt
-  server: 'mqtt://10.0.0.6'
+  server: mqtt://10.0.0.6
   user: '!secret user'
   password: '!secret password'
 serial:
@@ -18,13 +18,15 @@ advanced:
     - console
 frontend:
   port: 8080
+device_options:
+  legacy: false
 devices:
   '0x00158d0002c12756':
     friendly_name: Master Bedroom Climate
   '0x00158d0002e935dd':
     friendly_name: Living Room Climate
   '0x000d6ffffec24c99':
-    friendly_name: Living Room Smart Plug
+    friendly_name: Kids Corner Smart Plug
   '0x00158d0002e20b09':
     friendly_name: Back Door
   '0x00158d0002bfc3fd':
@@ -33,7 +35,6 @@ devices:
     friendly_name: Front Door Mailbox
   '0x00158d0002581c83':
     friendly_name: Smart Switch
-    legacy: false
   '0x00158d0003130f12':
     friendly_name: Smart Vibration Sensor
   '0x00158d00025c0460':
@@ -42,13 +43,12 @@ devices:
     friendly_name: Lower Floor Climate
   '0x00158d000303ffbd':
     friendly_name: Laundry Room Climate
-  '0x588e81fffe6536aa':
+  '0x086bd7fffe5ddeff':
     friendly_name: Kids Bedroom Dimmer
   '0x588e81fffe6536a4':
     friendly_name: Master Bedroom Dimmer
   '0x842e14fffe155397':
     friendly_name: Kids Corner Switch
-    legacy: false
   '0x0017880100e57ef4':
     friendly_name: Lamp 6
   '0x0017880100e58722':
@@ -70,7 +70,6 @@ devices:
     friendly_name: Lamp 7
   '0x804b50fffef75f28':
     friendly_name: Sewing Corner Switch
-    legacy: false
   '0x804b50fffee8f515':
     friendly_name: Lamp 8
   '0xd0cf5efffe311aa5':
@@ -79,6 +78,10 @@ devices:
     friendly_name: Lamp 2
   '0x0017880100117838':
     friendly_name: Lamp 1
+  '0x000d6ffffeda2b01':
+    friendly_name: Laundry Room Smart Plug
+  '0xec1bbdfffe41beea':
+    friendly_name: Living Room Smart Plug
 groups:
   '1':
     friendly_name: Kids Corner Group
