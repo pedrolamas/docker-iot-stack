@@ -1,6 +1,6 @@
 # Docker IoT Stack
 
-[![Project Maintenance](https://img.shields.io/maintenance/yes/2021.svg)](https://github.com/pedrolamas/nanopineo2-docker-config 'GitHub Repository')
+[![Project Maintenance](https://img.shields.io/maintenance/yes/2022.svg)](https://github.com/pedrolamas/nanopineo2-docker-config 'GitHub Repository')
 [![License](https://img.shields.io/github/license/pedrolamas/nanopineo2-docker-config.svg)](https://github.com/pedrolamas/nanopineo2-docker-config/blob/master/LICENSE 'License')
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/pedrolamas?style=social)](https://twitter.com/pedrolamas '@pedrolamas')
@@ -92,6 +92,18 @@ Run VS Code on any machine anywhere and access it through the browser.
 Build and manage your Docker environments with ease today.
 
 * Image: [portainer/portainer](https://hub.docker.com/r/portainer/portainer)
+
+### Fluidd
+
+Fluidd is a lightweight & responsive user interface for Klipper, the 3D printer firmware.
+
+* Image: [cadriel/fluidd](https://hub.docker.com/r/cadriel/fluidd)
+
+### Mainsail
+
+Mainsail makes Klipper more accessible by adding a lightweight, responsive web user interface, centred around an intuitive and consistent design philosophy.
+
+* Image: [ei99070/docker-mainsail](https://hub.docker.com/r/ei99070/docker-mainsail)
 
 ### Wireguard
 

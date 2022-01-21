@@ -27,6 +27,7 @@ services:
       - esphome
       - vscode
       - fluidd
+      - mainsail
     image: nginx
     restart: unless-stopped
     networks:
@@ -243,6 +244,18 @@ services:
     networks:
       backbone:
         ipv4_address: 10.0.0.16
+    env_file:
+      - ./common.env
+    dns: 10.0.0.3
+
+  mainsail:
+    depends_on:
+      - adguardhome
+    image: ei99070/docker-mainsail:latest-dev
+    restart: unless-stopped
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.17
     env_file:
       - ./common.env
     dns: 10.0.0.3
