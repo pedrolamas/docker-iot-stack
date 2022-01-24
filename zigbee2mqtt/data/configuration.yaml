@@ -54,7 +54,7 @@ devices:
   '0x0017880100e58722':
     friendly_name: Lamp 5
   '0x14b457fffe156c68':
-    friendly_name: Master Bedroom PIR Sensor
+    friendly_name: Smart PIR Sensor
   '0x0017880100ebe30b':
     friendly_name: Lamp 4
     transition: 1
