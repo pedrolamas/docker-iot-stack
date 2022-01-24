@@ -63,6 +63,10 @@ http {
     ip_hash;
     server fluidd;
   }
+  upstream mainsail-upstream {
+    ip_hash;
+    server mainsail;
+  }
   upstream ender3v2-apiserver-upstream {
     ip_hash;
     server ${NGINX_ENDER3V2_UPSTREAM}:7125;
@@ -242,6 +246,29 @@ http {
 
     location / {
       proxy_pass http://fluidd-upstream/;
+    }
+
+    location /websocket {
+        proxy_pass http://ender3v2-apiserver-upstream/websocket;
+        proxy_read_timeout 86400;
+    }
+
+    location ~ ^/(printer|api|access|machine|server)/ {
+        proxy_pass http://ender3v2-apiserver-upstream$request_uri;
+    }
+
+    location /webcam/ {
+        proxy_pass http://ender3v2-mjpgstreamer-upstream/;
+    }
+  }
+
+  server {
+    include le-certs/nginx-server.conf;
+
+    server_name mainsail.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    location / {
+      proxy_pass http://mainsail-upstream/;
     }
 
     location /websocket {
