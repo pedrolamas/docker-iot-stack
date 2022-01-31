@@ -97,7 +97,7 @@ Build and manage your Docker environments with ease today.
 
 Fluidd is a lightweight & responsive user interface for Klipper, the 3D printer firmware.
 
-* Image: [cadriel/fluidd](https://hub.docker.com/r/cadriel/fluidd)
+* Image: [ei99070/docker-fluidd](https://hub.docker.com/r/ei99070/docker-fluidd)
 
 ### Mainsail
 
