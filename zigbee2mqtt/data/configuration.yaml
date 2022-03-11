@@ -18,6 +18,7 @@ advanced:
     - console
 frontend:
   port: 8080
+availability: true
 device_options:
   legacy: false
 devices:
