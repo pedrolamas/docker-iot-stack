@@ -65,7 +65,7 @@ services:
     network_mode: host
     volumes:
       - "./homeassistant/config:/config"
-      - "/mnt/media/TV\ Shows:/media/tv:ro"
+      - "/mnt/media/TV:/media/tv:ro"
       - "/mnt/media/Movies:/media/movies:ro"
     env_file:
       - ./common.env
@@ -315,7 +315,7 @@ services:
     volumes:
       - "./sonarr/config:/config"
       - "../downloads:/downloads"
-      - "/mnt/media/TV\ Shows:/tv"
+      - "/mnt/media/TV:/tv"
     env_file:
       - ./common.env
       - ./common-linuxserver.env
