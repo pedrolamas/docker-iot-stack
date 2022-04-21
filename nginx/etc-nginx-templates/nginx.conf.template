@@ -259,6 +259,11 @@ http {
 
     location /webcam/ {
         proxy_pass http://ender3v2-mjpgstreamer-upstream/;
+        postpone_output 0;
+        proxy_buffering off;
+        proxy_ignore_headers X-Accel-Buffering;
+        access_log off;
+        error_log off;
     }
   }
 
@@ -282,6 +287,11 @@ http {
 
     location /webcam/ {
         proxy_pass http://ender3v2-mjpgstreamer-upstream/;
+        postpone_output 0;
+        proxy_buffering off;
+        proxy_ignore_headers X-Accel-Buffering;
+        access_log off;
+        error_log off;
     }
   }
 
