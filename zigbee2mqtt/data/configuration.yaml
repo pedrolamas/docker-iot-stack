@@ -42,12 +42,6 @@ devices:
     friendly_name: Kids Bedroom Climate
   '0x00158d000449f059':
     friendly_name: Lower Floor Climate
-  '0x00158d000303ffbd':
-    friendly_name: Laundry Room Climate
-  '0x086bd7fffe5ddeff':
-    friendly_name: Kids Bedroom Dimmer
-  '0x588e81fffe6536a4':
-    friendly_name: Master Bedroom Dimmer
   '0x842e14fffe155397':
     friendly_name: Kids Corner Switch
   '0x0017880100e57ef4':
@@ -71,8 +65,6 @@ devices:
     friendly_name: Lamp 7
   '0x804b50fffef75f28':
     friendly_name: Sewing Corner Switch
-  '0x804b50fffee8f515':
-    friendly_name: Lamp 8
   '0xd0cf5efffe311aa5':
     friendly_name: Lamp 3
   '0x0017880100ebe022':
@@ -83,6 +75,32 @@ devices:
     friendly_name: Laundry Room Smart Plug
   '0xec1bbdfffe41beea':
     friendly_name: Living Room Smart Plug
+  '0x00158d000303ffbd':
+    friendly_name: Laundry Room Climate
+  '0xa4c1387ab28b0a44':
+    friendly_name: Remote 1
+  '0x001788010b1ef157':
+    friendly_name: Lamp 8
+  '0xa4c138e02863828f':
+    friendly_name: Master Bedroom Switch
+    homeassistant:
+      switch:
+        type: light
+        object_id: light
+      light:
+        name: Master Bedroom Switch
+        value_template: null
+        state_value_template: '{{ value_json.state }}'
+  '0xa4c138f6add5ed0f':
+    friendly_name: Kids Bedroom Switch
+    homeassistant:
+      switch:
+        type: light
+        object_id: light
+      light:
+        name: Kids Bedroom Switch
+        value_template: null
+        state_value_template: '{{ value_json.state }}'
 groups:
   '1':
     friendly_name: Kids Corner Group
@@ -92,4 +110,4 @@ groups:
   '2':
     friendly_name: Sewing Corner Group
     devices:
-      - 0x804b50fffee8f515/1
+      - 0x001788010b1ef157/11
