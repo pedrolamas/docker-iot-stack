@@ -184,7 +184,7 @@ services:
   esphome:
     depends_on:
       - adguardhome
-    image: esphome/esphome-aarch64
+    image: esphome/esphome
     restart: unless-stopped
     network_mode: host
     volumes:
