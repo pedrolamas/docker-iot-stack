@@ -19,31 +19,15 @@ wifi:
     
 esp32_ble_tracker:
 
-sensor:
-  - platform: xiaomi_hhccjcy01
-    mac_address: 'C4:7C:8D:6B:F6:EE'
-    temperature:
-      name: "${esphome_name} Plant 1 Temperature"
-    moisture:
-      name: "${esphome_name} Plant 1 Moisture"
-    illuminance:
-      name: "${esphome_name} Plant 1 Illuminance"
-    conductivity:
-      name: "${esphome_name} Plant 1 Soil Conductivity"
-    battery_level:
-      name: "${esphome_name} Plant 1 Battery Level"
-  - platform: xiaomi_hhccjcy01
-    mac_address: 'C4:7C:8D:6B:F4:91'
-    temperature:
-      name: "${esphome_name} Plant 2 Temperature"
-    moisture:
-      name: "${esphome_name} Plant 2 Moisture"
-    illuminance:
-      name: "${esphome_name} Plant 2 Illuminance"
-    conductivity:
-      name: "${esphome_name} Plant 2 Soil Conductivity"
-    battery_level:
-      name: "${esphome_name} Plant 2 Battery Level"
+bluetooth_proxy:
+
+remote_receiver:
+  pin: GPIO32
+  dump: rc_switch
+  tolerance: 50%
+  filter: 250us
+  idle: 4ms
+  buffer_size: 2kb
 
 button:
   - platform: restart
@@ -54,7 +38,8 @@ captive_portal:
 logger:
 
 api:
-  password: !secret api_password
+  encryption:
+    key: !secret encryption_key
 
 ota:
   password: !secret ota_password
