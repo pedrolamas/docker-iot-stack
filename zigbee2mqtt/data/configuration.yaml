@@ -101,6 +101,8 @@ devices:
         name: Kids Bedroom Switch
         value_template: null
         state_value_template: '{{ value_json.state }}'
+  '0x086bd7fffe5ddeff':
+    friendly_name: Kids Corner Dimmer
 groups:
   '1':
     friendly_name: Kids Corner Group
