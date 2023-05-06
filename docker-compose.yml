@@ -239,7 +239,7 @@ services:
   fluidd:
     depends_on:
       - adguardhome
-    image: ei99070/docker-fluidd:latest-dev
+    image: ghcr.io/fluidd-core/fluidd:latest-develop
     restart: unless-stopped
     networks:
       backbone:
