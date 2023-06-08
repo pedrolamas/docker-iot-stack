@@ -35,8 +35,10 @@ services:
         ipv4_address: 10.0.0.4
     ports:
       - "80:80"
-      - "443:443"
-      - "21443:21443"
+      - "443:443/tcp"
+      - "443:443/udp"
+      - "21443:21443/tcp"
+      - "21443:21443/udp"
     extra_hosts:
       - "homeassistant:10.0.0.1"
       - "esphome:10.0.0.1"
