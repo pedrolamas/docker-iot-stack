@@ -107,10 +107,10 @@ services:
       - "./zigbee2mqtt/data:/app/data"
       # - "./zigbee2mqtt/zigbee-herdsman-converters:/app/node_modules/zigbee-herdsman-converters"
       # - "./zigbee2mqtt/homeassistant-extension/homeassistant.js:/app/lib/extension/homeassistant.js"
-    # environment:
-    #   - DEBUG=zigbee-herdsman*
     devices:
       - "/dev/ttyUSB0:/dev/ttyUSB0"
+    # environment:
+    #   - DEBUG=zigbee-herdsman*
     env_file:
       - ./common.env
     dns: 10.0.0.3
@@ -261,6 +261,36 @@ services:
     env_file:
       - ./common.env
     dns: 10.0.0.3
+
+  readsb:
+    image: ghcr.io/sdr-enthusiasts/docker-readsb-protobuf
+    restart: unless-stopped
+    tty: true
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.18
+    ports:
+      - 30005:30005
+    volumes:
+      - "./readsb/collectd:/run/collectd"
+      - "./readsb/autogain:/run/autogain"
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+    env_file:
+      - ./common.env
+      - ./readsb/secrets.env
+    environment:
+      - READSB_DCFILTER=true
+      - READSB_DEVICE_TYPE=rtlsdr
+      - READSB_FIX=true
+      - READSB_GAIN=autogain
+      - READSB_MODEAC=true
+      - READSB_RX_LOCATION_ACCURACY=2
+      - READSB_STATS_RANGE=true
+      - READSB_NET_ENABLE=true
+    dns: 10.0.0.3
+    tmpfs:
+      - /run/readsb:size=64M
 
   wireguard:
     image: linuxserver/wireguard

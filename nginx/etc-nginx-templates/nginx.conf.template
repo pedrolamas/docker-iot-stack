@@ -75,6 +75,10 @@ http {
     ip_hash;
     server ${NGINX_ENDER3V2_UPSTREAM}:8080;
   }
+  upstream readsb-upstream {
+    ip_hash;
+    server readsb:8080;
+  }
   upstream transmission-upstream {
     ip_hash;
     server wireguard:9091;
@@ -292,6 +296,16 @@ http {
       proxy_ignore_headers X-Accel-Buffering;
       access_log off;
       error_log off;
+    }
+  }
+
+  server {
+    include le-certs/nginx-server.conf;
+
+    server_name readsb.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    location / {
+      proxy_pass http://readsb-upstream/;
     }
   }
 
