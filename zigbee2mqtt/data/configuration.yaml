@@ -67,8 +67,9 @@ devices:
     friendly_name: Sewing Corner Switch
   '0xd0cf5efffe311aa5':
     friendly_name: Lamp 3
-  '0x0017880100ebe022':
+  '0x1c34f1fffe7b1c6f':
     friendly_name: Lamp 2
+    transition: 1
   '0x0017880100117838':
     friendly_name: Lamp 1
   '0x000d6ffffeda2b01':
