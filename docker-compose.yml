@@ -263,6 +263,8 @@ services:
     dns: 10.0.0.3
 
   readsb:
+    depends_on:
+      - adguardhome
     image: ghcr.io/sdr-enthusiasts/docker-readsb-protobuf
     restart: unless-stopped
     tty: true
