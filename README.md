@@ -38,7 +38,7 @@ Nginx (pronounced "engine-x") is an open source reverse proxy server for HTTP, H
 
 Home Assistant is an open source home automation tool that puts local control and privacy first.
 
-* Image: [homeassistant/home-assistant](https://hub.docker.com/r/homeassistant/home-assistant)
+* Image: [ghcr.io/home-assistant/home-assistant](https://github.com/home-assistant/core/pkgs/container/home-assistant)
 
 ### Eclipse Mosquitto
 

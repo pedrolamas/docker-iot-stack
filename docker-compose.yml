@@ -59,7 +59,7 @@ services:
     depends_on:
       - mariadb
       - mosquitto
-    image: homeassistant/home-assistant
+    image: ghcr.io/home-assistant/home-assistant
     restart: unless-stopped
     healthcheck:
       test: >-
