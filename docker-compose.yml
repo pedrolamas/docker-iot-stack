@@ -292,6 +292,20 @@ services:
     tmpfs:
       - /run/readsb:size=64M
 
+  opensky:
+    depends_on:
+      - readsb
+    image: ghcr.io/sdr-enthusiasts/docker-opensky-network
+    restart: unless-stopped
+    tty: true
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.20
+    env_file:
+      - ./common.env
+      - ./opensky/secrets.env
+    dns: 10.0.0.3
+
   wireguard:
     image: linuxserver/wireguard
     restart: unless-stopped
