@@ -74,7 +74,7 @@ Grafana is the open source analytics and monitoring solution for every database.
 
 ESPHome is a system to control your ESP8266/ESP32 by simple yet powerful configuration files and control them remotely through Home Automation systems.
 
-* Image: [esphome/esphome-aarch64](https://hub.docker.com/r/esphome/esphome-aarch64)
+* Image: [ghcr.io/esphome/esphome](https://github.com/esphome/esphome/pkgs/container/esphome)
 
 ### ACME.sh
 
