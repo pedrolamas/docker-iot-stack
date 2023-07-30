@@ -28,6 +28,7 @@ services:
       - vscode
       - fluidd
       - mainsail
+      - spoolman
     image: nginx
     restart: unless-stopped
     networks:
@@ -307,6 +308,19 @@ services:
       - ./common.env
       - ./opensky/secrets.env
     dns: 10.0.0.3
+
+  spoolman:
+    depends_on:
+      - adguardhome
+    image: ghcr.io/donkie/spoolman
+    restart: unless-stopped
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.21
+    volumes:
+      - "./spoolman/data:/home/app/.local/share/spoolman"
+    env_file:
+      - ./common.env
 
   wireguard:
     image: linuxserver/wireguard

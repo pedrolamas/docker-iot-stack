@@ -106,11 +106,23 @@ Mainsail makes Klipper more accessible by adding a lightweight, responsive web u
 
 * Image: [ei99070/docker-mainsail](https://hub.docker.com/r/ei99070/docker-mainsail)
 
+### Spoolman
+
+Spoolman is a web service that helps you keep track of your filament spools and how they are being used.
+
+* Image: [ghcr.io/donkie/spoolman](https://github.com/donkie/spoolman/pkgs/container/spoolman)
+
 ### Mictronics' readsb-protobuf
 
 Mictronics' readsb-protobuf Mode-S/ADSB/TIS decoder for RTLSDR, BladeRF, Modes-Beast and GNS5894 devices, running in a docker container.
 
 * Image: [ghcr.io/sdr-enthusiasts/docker-readsb-protobuf](https://github.com/sdr-enthusiasts/docker-readsb-protobuf/pkgs/container/docker-readsb-protobuf)
+
+### docker-opensky-network
+
+Docker container running OpenSky Network's's opensky-feeder. Designed to work in tandem with sdr-enthusiasts/docker-readsb-protobuf.
+
+* Image: [ghcr.io/sdr-enthusiasts/docker-opensky-network](https://github.com/sdr-enthusiasts/docker-opensky-network/pkgs/container/docker-opensky-network)
 
 ### Wireguard
 
