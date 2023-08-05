@@ -83,23 +83,21 @@ devices:
   '0x001788010b1ef157':
     friendly_name: Lamp 8
   '0xa4c138e02863828f':
-    friendly_name: Master Bedroom Switch
+    friendly_name: Master Bedroom Ceiling Light
     homeassistant:
       switch:
         type: light
         object_id: light
       light:
-        name: Master Bedroom Switch
         value_template: null
         state_value_template: '{{ value_json.state }}'
   '0xa4c138f6add5ed0f':
-    friendly_name: Kids Bedroom Switch
+    friendly_name: Kids Bedroom Ceiling Light
     homeassistant:
       switch:
         type: light
         object_id: light
       light:
-        name: Kids Bedroom Switch
         value_template: null
         state_value_template: '{{ value_json.state }}'
   '0x086bd7fffe5ddeff':
