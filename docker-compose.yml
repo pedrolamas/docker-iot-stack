@@ -254,7 +254,7 @@ services:
   mainsail:
     depends_on:
       - adguardhome
-    image: ei99070/docker-mainsail:latest-dev
+    image: ghcr.io/pedrolamas/docker-mainsail:latest-dev
     restart: unless-stopped
     networks:
       backbone:

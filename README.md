@@ -104,7 +104,7 @@ Fluidd is a lightweight & responsive user interface for Klipper, the 3D printer 
 
 Mainsail makes Klipper more accessible by adding a lightweight, responsive web user interface, centred around an intuitive and consistent design philosophy.
 
-* Image: [ei99070/docker-mainsail](https://hub.docker.com/r/ei99070/docker-mainsail)
+* Image: [ghcr.io/pedrolamas/docker-mainsail:latest-dev](https://github.com/pedrolamas/docker-mainsail/pkgs/container/docker-mainsail)
 
 ### Spoolman
 
