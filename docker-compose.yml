@@ -29,6 +29,8 @@ services:
       - fluidd
       - mainsail
       - spoolman
+      - readsb
+      - flightradar24
     image: nginx
     restart: unless-stopped
     networks:
@@ -294,6 +296,20 @@ services:
     dns: 10.0.0.3
     tmpfs:
       - /run/readsb:size=64M
+
+  flightradar24:
+    depends_on:
+      - readsb
+    image: ghcr.io/sdr-enthusiasts/docker-flightradar24
+    restart: unless-stopped
+    tty: true
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.19
+    env_file:
+      - ./common.env
+      - ./flightradar24/secrets.env
+    dns: 10.0.0.3
 
   opensky:
     depends_on:

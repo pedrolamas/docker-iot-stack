@@ -118,6 +118,12 @@ Mictronics' readsb-protobuf Mode-S/ADSB/TIS decoder for RTLSDR, BladeRF, Modes-B
 
 * Image: [ghcr.io/sdr-enthusiasts/docker-readsb-protobuf](https://github.com/sdr-enthusiasts/docker-readsb-protobuf/pkgs/container/docker-readsb-protobuf)
 
+### docker-flightradar24
+
+Docker container running FlightRadar24's fr24feed. Designed to work in tandem with sdr-enthusiasts/docker-readsb-protobuf.
+
+* Image: [ghcr.io/sdr-enthusiasts/docker-flightradar24](https://github.com/sdr-enthusiasts/docker-flightradar24/pkgs/container/docker-flightradar24)
+
 ### docker-opensky-network
 
 Docker container running OpenSky Network's's opensky-feeder. Designed to work in tandem with sdr-enthusiasts/docker-readsb-protobuf.

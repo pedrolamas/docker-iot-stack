@@ -83,6 +83,10 @@ http {
     ip_hash;
     server readsb:8080;
   }
+  upstream flightradar24-upstream {
+    ip_hash;
+    server flightradar24:8754;
+  }
   upstream transmission-upstream {
     ip_hash;
     server wireguard:9091;
@@ -320,6 +324,16 @@ http {
 
     location / {
       proxy_pass http://readsb-upstream/;
+    }
+  }
+
+  server {
+    include le-certs/nginx-server.conf;
+
+    server_name flightradar24.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    location / {
+      proxy_pass http://flightradar24-upstream/;
     }
   }
 
