@@ -79,6 +79,10 @@ http {
     ip_hash;
     server ${NGINX_ENDER3V2_UPSTREAM}:8080;
   }
+  upstream trident300-apiserver-upstream {
+    ip_hash;
+    server ${NGINX_TRIDENT300_UPSTREAM}:7125;
+  }
   upstream readsb-upstream {
     ip_hash;
     server readsb:8080;
@@ -281,6 +285,44 @@ http {
       proxy_buffering off;
       proxy_ignore_headers X-Accel-Buffering;
       access_log off;
+    }
+  }
+
+  server {
+    include le-certs/nginx-server.conf;
+
+    server_name ender3v2.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    location / {
+      proxy_pass http://ender3v2-apiserver-upstream/;
+    }
+
+    location /websocket {
+      proxy_pass http://ender3v2-apiserver-upstream/websocket;
+      proxy_read_timeout 86400;
+    }
+
+    location /webcam/ {
+      proxy_pass http://ender3v2-mjpgstreamer-upstream/;
+      postpone_output 0;
+      proxy_buffering off;
+      proxy_ignore_headers X-Accel-Buffering;
+      access_log off;
+    }
+  }
+
+  server {
+    include le-certs/nginx-server.conf;
+
+    server_name trident300.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    location / {
+      proxy_pass http://trident300-apiserver-upstream/;
+    }
+
+    location /websocket {
+      proxy_pass http://trident300-apiserver-upstream/websocket;
+      proxy_read_timeout 86400;
     }
   }
 
