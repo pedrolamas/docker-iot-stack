@@ -56,18 +56,18 @@ sensor:
       filters:
         - multiply: 0.001
 
-button:
-  - platform: restart
-    name: "${esphome_name} Restart"
-
 switch:
   - platform: template
     name: "${esphome_name} LED enabled"
     id: led_enabled
     optimistic: true
 
+button:
+  - platform: restart
+    name: "${esphome_name} Restart"
+
 time:
-  - platform: sntp
+  - platform: homeassistant
 
 captive_portal:
 

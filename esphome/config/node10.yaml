@@ -36,6 +36,9 @@ button:
   - platform: restart
     name: "${esphome_name} Restart"
 
+time:
+  - platform: homeassistant
+
 captive_portal:
 
 logger:
