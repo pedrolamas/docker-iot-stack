@@ -61,7 +61,7 @@ devices:
     friendly_name: Kids Bedroom Smart Plug
   '0xec1bbdfffe3bed9a':
     friendly_name: Washing Machine Smart Plug
-  '0x842e14fffe7c5912':
+  '0x001788010b1e94b6':
     friendly_name: Lamp 7
   '0x804b50fffef75f28':
     friendly_name: Sewing Corner Switch
@@ -89,7 +89,6 @@ devices:
         type: light
         object_id: light
       light:
-        value_template: null
         state_value_template: '{{ value_json.state }}'
   '0xa4c138f6add5ed0f':
     friendly_name: Kids Bedroom Ceiling Light
@@ -98,10 +97,13 @@ devices:
         type: light
         object_id: light
       light:
-        value_template: null
         state_value_template: '{{ value_json.state }}'
   '0x086bd7fffe5ddeff':
     friendly_name: Kids Corner Dimmer
+  '0xa4c1387e4ba155df':
+    friendly_name: Lara bed light
+  '0xa4c138700bc51466':
+    friendly_name: Daniel Bed Light
 groups:
   '1':
     friendly_name: Kids Corner Group
@@ -112,3 +114,8 @@ groups:
     friendly_name: Sewing Corner Group
     devices:
       - 0x001788010b1ef157/11
+  '3':
+    friendly_name: Kids Beds Group
+    devices:
+      - 0xa4c138700bc51466/1
+      - 0xa4c1387e4ba155df/1
