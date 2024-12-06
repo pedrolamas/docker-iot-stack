@@ -1,4 +1,7 @@
-homeassistant: true
+homeassistant:
+  legacy_entity_attributes: false
+  experimental_event_entities: true
+  legacy_triggers: false
 permit_join: false
 mqtt:
   base_topic: zigbee2mqtt
@@ -12,10 +15,11 @@ advanced:
   pan_id: 6752
   channel: 20
   network_key: '!secret network_key'
-  homeassistant_legacy_entity_attributes: false
-  log_level: warn
+  log_level: warning
   log_output:
     - console
+  legacy_availability_payload: false
+  legacy_api: false
 frontend:
   port: 8080
 availability: true
