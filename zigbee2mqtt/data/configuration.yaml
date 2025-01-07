@@ -1,8 +1,6 @@
 homeassistant:
-  legacy_entity_attributes: false
+  enabled: true
   experimental_event_entities: true
-  legacy_triggers: false
-permit_join: false
 mqtt:
   base_topic: zigbee2mqtt
   server: mqtt://10.0.0.6
@@ -10,21 +8,21 @@ mqtt:
   password: '!secret password'
 serial:
   port: /dev/ttyUSB0
-advanced:
+  adapter: zstack
   rtscts: false
+advanced:
   pan_id: 6752
   channel: 20
   network_key: '!secret network_key'
   log_level: warning
   log_output:
     - console
-  legacy_availability_payload: false
-  legacy_api: false
 frontend:
+  enabled: true
   port: 8080
-availability: true
-device_options:
-  legacy: false
+availability:
+  enabled: true
+device_options: {}
 devices:
   '0x00158d0002c12756':
     friendly_name: Master Bedroom Climate
@@ -111,15 +109,8 @@ devices:
 groups:
   '1':
     friendly_name: Kids Corner Group
-    devices:
-      - 0x0017880100e58722/11
-      - 0x0017880100e57ef4/11
   '2':
     friendly_name: Sewing Corner Group
-    devices:
-      - 0x001788010b1ef157/11
   '3':
     friendly_name: Kids Beds Group
-    devices:
-      - 0xa4c138700bc51466/1
-      - 0xa4c1387e4ba155df/1
+version: 4
