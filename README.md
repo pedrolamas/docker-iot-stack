@@ -1,9 +1,9 @@
 # Docker IoT Stack
 
-[![Project Maintenance](https://img.shields.io/maintenance/yes/2024.svg)](https://github.com/pedrolamas/nanopineo2-docker-config 'GitHub Repository')
+[![Project Maintenance](https://img.shields.io/maintenance/yes/2025.svg)](https://github.com/pedrolamas/nanopineo2-docker-config 'GitHub Repository')
 [![License](https://img.shields.io/github/license/pedrolamas/nanopineo2-docker-config.svg)](https://github.com/pedrolamas/nanopineo2-docker-config/blob/master/LICENSE 'License')
 
-[![Follow pedrolamas on Twitter](https://img.shields.io/twitter/follow/pedrolamas?label=Follow%20@pedrolamas%20on%20Twitter&style=social)](https://twitter.com/pedrolamas)
+[![Follow pedrolamas.com on Bluesky](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fpublic.api.bsky.app%2Fxrpc%2Fapp.bsky.actor.getProfile%2F%3Factor%3Dpedrolamas.com&query=%24.followersCount&style=social&logo=bluesky&label=Follow%20%40pedrolamas.com)](https://bsky.app/profile/pedrolamas.com)
 [![Follow pedrolamas on Mastodon](https://img.shields.io/mastodon/follow/109365776481898704?label=Follow%20@pedrolamas%20on%20Mastodon&domain=https%3A%2F%2Fhachyderm.io&style=social)](https://hachyderm.io/@pedrolamas)
 
 This is my personal Docker IoT Stack configuration, currently up and running inside a [NanoPi M4V2](https://www.friendlyarm.com/index.php?route=product/product&product_id=180) small board computer (SBC) with a Sabrent 256GB Rocket NVMe PCIe M.2 2280 SSD.
