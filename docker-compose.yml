@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   adguardhome:
     image: adguard/adguardhome
@@ -29,7 +27,7 @@ services:
       - fluidd
       - mainsail
       - spoolman
-      - readsb
+      - ultrafeeder
       - flightradar24
     image: nginx
     restart: unless-stopped
@@ -265,41 +263,39 @@ services:
       - ./common.env
     dns: 10.0.0.3
 
-  readsb:
+  ultrafeeder:
     depends_on:
       - adguardhome
-    image: ghcr.io/sdr-enthusiasts/docker-readsb-protobuf
+    image: ghcr.io/sdr-enthusiasts/docker-adsb-ultrafeeder
     restart: unless-stopped
-    tty: true
+    device_cgroup_rules:
+      - "c 189:* rwm"
     networks:
       backbone:
         ipv4_address: 10.0.0.18
     ports:
       - 30005:30005
     volumes:
-      - "./readsb/collectd:/run/collectd"
-      - "./readsb/autogain:/run/autogain"
-    devices:
-      - /dev/bus/usb:/dev/bus/usb
+      - "./ultrafeeder/globe_history:/var/globe_history"
+      - "./ultrafeeder/graphs1090:/var/lib/collectd"
+      - "/proc/diskstats:/proc/diskstats:ro"
+      - "/dev/bus/usb:/dev/bus/usb"
     env_file:
       - ./common.env
-      - ./readsb/secrets.env
+      - ./ultrafeeder/secrets.env
     environment:
-      - READSB_DCFILTER=true
+      - LOGLEVEL=error
       - READSB_DEVICE_TYPE=rtlsdr
-      - READSB_FIX=true
-      - READSB_GAIN=autogain
-      - READSB_MODEAC=true
-      - READSB_RX_LOCATION_ACCURACY=2
-      - READSB_STATS_RANGE=true
-      - READSB_NET_ENABLE=true
+      - READSB_GAIN=auto
     dns: 10.0.0.3
     tmpfs:
-      - /run/readsb:size=64M
+      - /run:exec,size=256M
+      - /tmp:size=128M
+      - /var/log:size=32M
 
   flightradar24:
     depends_on:
-      - readsb
+      - ultrafeeder
     image: ghcr.io/sdr-enthusiasts/docker-flightradar24
     restart: unless-stopped
     tty: true
@@ -313,7 +309,7 @@ services:
 
   opensky:
     depends_on:
-      - readsb
+      - ultrafeeder
     image: ghcr.io/sdr-enthusiasts/docker-opensky-network
     restart: unless-stopped
     tty: true

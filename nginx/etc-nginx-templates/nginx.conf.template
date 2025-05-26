@@ -87,9 +87,9 @@ http {
     ip_hash;
     server ${NGINX_TRIDENT300_UPSTREAM}:8080;
   }
-  upstream readsb-upstream {
+  upstream ultrafeeder-upstream {
     ip_hash;
-    server readsb:8080;
+    server ultrafeeder:80;
   }
   upstream flightradar24-upstream {
     ip_hash;
@@ -368,10 +368,10 @@ http {
   server {
     include le-certs/nginx-server.conf;
 
-    server_name readsb.${NGINX_SERVER_LOCAL_DOMAIN};
+    server_name ultrafeeder.${NGINX_SERVER_LOCAL_DOMAIN};
 
     location / {
-      proxy_pass http://readsb-upstream/;
+      proxy_pass http://ultrafeeder-upstream/;
     }
   }
 
