@@ -18,17 +18,39 @@ services:
 
   nginx:
     depends_on:
-      - adguardhome
-      - homeassistant
-      - grafana
-      - portainer
-      - esphome
-      - vscode
-      - fluidd
-      - mainsail
-      - spoolman
-      - ultrafeeder
-      - flightradar24
+      adguardhome:
+        condition: service_started
+        restart: false
+      homeassistant:
+        condition: service_started
+        restart: false
+      grafana:
+        condition: service_started
+        restart: false
+      portainer:
+        condition: service_started
+        restart: false
+      esphome:
+        condition: service_started
+        restart: false
+      vscode:
+        condition: service_started
+        restart: false
+      fluidd:
+        condition: service_started
+        restart: false
+      mainsail:
+        condition: service_started
+        restart: false
+      spoolman:
+        condition: service_started
+        restart: false
+      ultrafeeder:
+        condition: service_started
+        restart: false
+      flightradar24:
+        condition: service_started
+        restart: false
     image: nginx
     restart: unless-stopped
     networks:
@@ -78,7 +100,9 @@ services:
 
   mosquitto:
     depends_on:
-      - adguardhome
+      adguardhome:
+        condition: service_started
+        restart: false
     image: eclipse-mosquitto
     restart: unless-stopped
     networks:
@@ -118,7 +142,9 @@ services:
 
   telegraf:
     depends_on:
-      - adguardhome
+      adguardhome:
+        condition: service_started
+        restart: false
     image: telegraf
     restart: unless-stopped
     networks:
@@ -141,7 +167,9 @@ services:
 
   mariadb:
     depends_on:
-      - adguardhome
+      adguardhome:
+        condition: service_started
+        restart: false
     image: mariadb
     restart: unless-stopped
     networks:
@@ -157,7 +185,9 @@ services:
 
   grafana:
     depends_on:
-      - adguardhome
+      adguardhome:
+        condition: service_started
+        restart: false
     image: grafana/grafana
     restart: unless-stopped
     networks:
@@ -171,7 +201,9 @@ services:
 
   portainer:
     depends_on:
-      - adguardhome
+      adguardhome:
+        condition: service_started
+        restart: false
     image: portainer/portainer-ce
     restart: unless-stopped
     networks:
@@ -186,7 +218,9 @@ services:
 
   esphome:
     depends_on:
-      - adguardhome
+      adguardhome:
+        condition: service_started
+        restart: false
     image: ghcr.io/esphome/esphome
     restart: unless-stopped
     network_mode: host
@@ -198,7 +232,9 @@ services:
 
   acme.sh:
     depends_on:
-      - adguardhome
+      adguardhome:
+        condition: service_started
+        restart: false
     image: neilpang/acme.sh
     restart: unless-stopped
     networks:
@@ -223,7 +259,9 @@ services:
 
   vscode:
     depends_on:
-      - adguardhome
+      adguardhome:
+        condition: service_started
+        restart: false
     image: codercom/code-server
     restart: unless-stopped
     networks:
@@ -241,7 +279,9 @@ services:
 
   fluidd:
     depends_on:
-      - adguardhome
+      adguardhome:
+        condition: service_started
+        restart: false
     image: ghcr.io/fluidd-core/fluidd:latest-develop
     restart: unless-stopped
     networks:
@@ -253,7 +293,9 @@ services:
 
   mainsail:
     depends_on:
-      - adguardhome
+      adguardhome:
+        condition: service_started
+        restart: false
     image: ghcr.io/pedrolamas/docker-mainsail:latest-dev
     restart: unless-stopped
     networks:
@@ -265,7 +307,9 @@ services:
 
   ultrafeeder:
     depends_on:
-      - adguardhome
+      adguardhome:
+        condition: service_started
+        restart: false
     image: ghcr.io/sdr-enthusiasts/docker-adsb-ultrafeeder
     restart: unless-stopped
     device_cgroup_rules:
@@ -323,8 +367,9 @@ services:
 
   spoolman:
     depends_on:
-      - adguardhome
-    image: ghcr.io/donkie/spoolman
+      adguardhome:
+        condition: service_started
+        restart: false
     restart: unless-stopped
     networks:
       backbone:
