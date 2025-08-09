@@ -63,8 +63,8 @@ services:
       - "21443:21443/tcp"
       - "21443:21443/udp"
     extra_hosts:
-      - "homeassistant:10.0.0.1"
-      - "esphome:10.0.0.1"
+      - "homeassistant:host-gateway"
+      - "esphome:host-gateway"
     volumes:
       - "./nginx/etc-nginx-templates:/etc/nginx/templates"
       - "./nginx/etc-nginx-cf-certs:/etc/nginx/cf-certs"
@@ -133,7 +133,7 @@ services:
       # - "./zigbee2mqtt/zigbee-herdsman-converters:/app/node_modules/zigbee-herdsman-converters"
       # - "./zigbee2mqtt/homeassistant-extension/homeassistant.js:/app/lib/extension/homeassistant.js"
     devices:
-      - "/dev/ttyUSB0:/dev/ttyUSB0"
+      - "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0:/dev/ttyUSB0"
     # environment:
     #   - DEBUG=zigbee-herdsman*
     env_file:
@@ -197,6 +197,7 @@ services:
       - "./grafana/data:/var/lib/grafana"
     env_file:
       - ./common.env
+    user: "1000:1000"
     dns: 10.0.0.3
 
   portainer:
@@ -350,6 +351,8 @@ services:
       - ./common.env
       - ./flightradar24/secrets.env
     dns: 10.0.0.3
+    tmpfs:
+      - /var/log:size=32M
 
   opensky:
     depends_on:
@@ -364,12 +367,15 @@ services:
       - ./common.env
       - ./opensky/secrets.env
     dns: 10.0.0.3
+    tmpfs:
+      - /var/log:size=32M
 
   spoolman:
     depends_on:
       adguardhome:
         condition: service_started
         restart: false
+    image: ghcr.io/donkie/spoolman
     restart: unless-stopped
     networks:
       backbone:
