@@ -459,6 +459,15 @@ services:
       - ./common.env
       - ./common-linuxserver.env
 
+  flaresolverr:
+    depends_on:
+      - wireguard
+    image: flaresolverr/flaresolverr
+    restart: unless-stopped
+    network_mode: service:wireguard
+    env_file:
+      - ./common.env
+
 networks:
   backbone:
     driver: bridge
