@@ -181,6 +181,8 @@ services:
     env_file:
       - ./common.env
       - ./mariadb/secrets.env
+    environment:
+      - MARIADB_AUTO_UPGRADE=1
     dns: 10.0.0.3
 
   grafana:
