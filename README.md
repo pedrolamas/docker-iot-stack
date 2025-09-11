@@ -160,6 +160,12 @@ Radarr is an independent fork of Sonarr reworked for automatically downloading m
 
 * Image: [linuxserver/radarr](https://hub.docker.com/r/linuxserver/radarr)
 
+### FlareSolverr
+
+FlareSolverr is a proxy server to bypass Cloudflare and DDoS-GUARD protection.
+
+* Image: [ghcr.io/flaresolverr/flaresolverr](https://github.com/FlareSolverr/FlareSolverr/pkgs/container/flaresolverr)
+
 ## Support my work
 
 A lot of time and effort goes into the development of this and other open-source projects.

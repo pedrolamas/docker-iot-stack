@@ -233,6 +233,20 @@ services:
       - ./common.env
     dns: 10.0.0.3
 
+  flaresolverr:
+    depends_on:
+      adguardhome:
+        condition: service_started
+        restart: false
+    image: ghcr.io/flaresolverr/flaresolverr
+    restart: unless-stopped
+    networks:
+      backbone:
+        ipv4_address: 10.0.0.12
+    env_file:
+      - ./common.env
+    dns: 10.0.0.3
+
   acme.sh:
     depends_on:
       adguardhome:
@@ -460,15 +474,6 @@ services:
     env_file:
       - ./common.env
       - ./common-linuxserver.env
-
-  flaresolverr:
-    depends_on:
-      - wireguard
-    image: flaresolverr/flaresolverr
-    restart: unless-stopped
-    network_mode: service:wireguard
-    env_file:
-      - ./common.env
 
 networks:
   backbone:
