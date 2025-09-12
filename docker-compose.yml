@@ -339,7 +339,6 @@ services:
     volumes:
       - "./ultrafeeder/globe_history:/var/globe_history"
       - "./ultrafeeder/graphs1090:/var/lib/collectd"
-      - "/proc/diskstats:/proc/diskstats:ro"
       - "/dev/bus/usb:/dev/bus/usb"
     env_file:
       - ./common.env
@@ -348,6 +347,8 @@ services:
       - LOGLEVEL=error
       - READSB_DEVICE_TYPE=rtlsdr
       - READSB_GAIN=auto
+      - GRAPHS1090_HIDE_SYSTEM=true
+      - ULTRAFEEDER_CONFIG=
     dns: 10.0.0.3
     tmpfs:
       - /run:exec,size=256M
