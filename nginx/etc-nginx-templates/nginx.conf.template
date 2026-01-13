@@ -128,7 +128,7 @@ http {
 
   log_format vhost '$host $remote_addr - $remote_user [$time_local] '
                    '"$request" $status $body_bytes_sent '
-                   '"$http_referer" "$http_user_agent"';
+                   '"$http_referer" "$http_user_agent" "$http3"';
 
   access_log /var/log/nginx/access.log vhost;
 
@@ -183,6 +183,14 @@ http {
     location / {
       proxy_pass http://grafana-upstream/;
     }
+  }
+
+  server {
+    include le-certs/nginx-server-default.conf;
+
+    server_name _;
+
+    return 404;
   }
 
   server {
