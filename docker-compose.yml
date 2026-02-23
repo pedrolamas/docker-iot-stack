@@ -84,18 +84,17 @@ services:
       - mosquitto
     image: ghcr.io/home-assistant/home-assistant
     restart: unless-stopped
-    healthcheck:
-      test: >-
-        curl -f http://localhost:8123 || exit 1
     network_mode: host
     volumes:
       - "./homeassistant/config:/config"
       - "/mnt/media/TV:/media/tv:ro"
       - "/mnt/media/Movies:/media/movies:ro"
+      - "/run/dbus:/run/dbus:ro"
     env_file:
       - ./common.env
     environment:
       - PYTHONWARNINGS=ignore:Unverified HTTPS request
+    privileged: true
     dns: 10.0.0.3
 
   mosquitto:
