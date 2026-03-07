@@ -111,6 +111,10 @@ http {
     ip_hash;
     server wireguard:7878;
   }
+  upstream seerr-upstream {
+    ip_hash;
+    server wireguard:5055;
+  }
 
   sendfile on;
   tcp_nopush on;
@@ -432,6 +436,16 @@ http {
 
     location / {
       proxy_pass http://radarr-upstream/;
+    }
+  }
+
+  server {
+    include le-certs/nginx-server.conf;
+
+    server_name seerr.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    location / {
+      proxy_pass http://seerr-upstream/;
     }
   }
 }

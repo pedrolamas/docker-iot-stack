@@ -58,7 +58,7 @@ Telegraf is an agent for collecting metrics and writing them to InfluxDB or othe
 
 * Image: [telegraf](https://hub.docker.com/_/telegraf)
 
-### mariadb
+### MariaDB
 
 MariaDB is a community-developed fork of MySQL intended to remain free under the GNU GPL.
 
@@ -92,7 +92,7 @@ Run VS Code on any machine anywhere and access it through the browser.
 
 Build and manage your Docker environments with ease today.
 
-* Image: [portainer/portainer](https://hub.docker.com/r/portainer/portainer)
+* Image: [portainer/portainer-ce](https://hub.docker.com/r/portainer/portainer-ce)
 
 ### Fluidd
 
@@ -126,7 +126,7 @@ Docker container running FlightRadar24's fr24feed. Designed to work in tandem wi
 
 ### docker-opensky-network
 
-Docker container running OpenSky Network's's opensky-feeder. Designed to work in tandem with sdr-enthusiasts/docker-adsb-ultrafeeder.
+Docker container running OpenSky Network's opensky-feeder. Designed to work in tandem with sdr-enthusiasts/docker-adsb-ultrafeeder.
 
 * Image: [ghcr.io/sdr-enthusiasts/docker-opensky-network](https://github.com/sdr-enthusiasts/docker-opensky-network/pkgs/container/docker-opensky-network)
 
@@ -159,6 +159,12 @@ Sonarr is a PVR for Usenet and BitTorrent users.
 Radarr is an independent fork of Sonarr reworked for automatically downloading movies via Usenet and BitTorrent.
 
 * Image: [linuxserver/radarr](https://hub.docker.com/r/linuxserver/radarr)
+
+### Seerr
+
+Seerr is a media discovery and request management application for your locally managed media library.
+
+* Image: [ghcr.io/seerr-team/seerr](https://github.com/seerrdev/seerr/pkgs/container/seerr)
 
 ### FlareSolverr
 

@@ -475,6 +475,19 @@ services:
       - ./common.env
       - ./common-linuxserver.env
 
+  seerr:
+    depends_on:
+      - wireguard
+    image: ghcr.io/seerr-team/seerr
+    restart: unless-stopped
+    init: true
+    network_mode: service:wireguard
+    volumes:
+      - "./seerr/config:/app/config"
+    env_file:
+      - ./common.env
+      - ./common-linuxserver.env
+
 networks:
   backbone:
     driver: bridge
