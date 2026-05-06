@@ -32,103 +32,85 @@ http {
   }
 
   upstream adguardhome-upstream {
-    ip_hash;
     server adguardhome;
   }
   upstream homeassistant-upstream {
-    ip_hash;
     server homeassistant:8123;
   }
   upstream grafana-upstream {
-    ip_hash;
     server grafana:3000;
   }
   upstream portainer-upstream {
-    ip_hash;
     server portainer:9000;
   }
   upstream esphome-upstream {
-    ip_hash;
     server esphome:6052;
   }
   upstream vscode-upstream {
-    ip_hash;
     server vscode:8080;
   }
   upstream zigbee2mqtt-upstream {
-    ip_hash;
     server zigbee2mqtt:8080;
   }
   upstream spoolman-upstream {
-    ip_hash;
     server spoolman:8000;
   }
   upstream fluidd-upstream {
-    ip_hash;
     server fluidd;
   }
   upstream mainsail-upstream {
-    ip_hash;
     server mainsail;
   }
   upstream ender3v2-apiserver-upstream {
-    ip_hash;
     server ${NGINX_ENDER3V2_UPSTREAM}:7125;
   }
   upstream ender3v2-streamer-upstream {
-    ip_hash;
     server ${NGINX_ENDER3V2_UPSTREAM}:8080;
   }
   upstream trident300-apiserver-upstream {
-    ip_hash;
     server ${NGINX_TRIDENT300_UPSTREAM}:7125;
   }
   upstream trident300-streamer-upstream {
-    ip_hash;
     server ${NGINX_TRIDENT300_UPSTREAM}:8080;
   }
   upstream ultrafeeder-upstream {
-    ip_hash;
     server ultrafeeder:80;
   }
   upstream flightradar24-upstream {
-    ip_hash;
     server flightradar24:8754;
   }
   upstream transmission-upstream {
-    ip_hash;
     server wireguard:9091;
   }
   upstream jackett-upstream {
-    ip_hash;
     server wireguard:9117;
   }
   upstream sonarr-upstream {
-    ip_hash;
     server wireguard:8989;
   }
   upstream radarr-upstream {
-    ip_hash;
     server wireguard:7878;
   }
   upstream seerr-upstream {
-    ip_hash;
     server wireguard:5055;
   }
 
   sendfile on;
   tcp_nopush on;
   tcp_nodelay on;
-  keepalive_timeout 15;
+  keepalive_timeout 65;
 
-  client_max_body_size 0;
+  client_max_body_size 10m;
+
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
 
   gzip on;
   gzip_vary on;
   gzip_comp_level 2;
   gzip_min_length 1024;
   gzip_proxied expired no-cache no-store private auth;
-  gzip_types text/plain text/css application/javascript application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+  gzip_types text/plain text/css application/javascript application/json text/xml application/xml application/xml+rss text/javascript image/svg+xml application/wasm;
 
   log_format vhost '$host $remote_addr - $remote_user [$time_local] '
                    '"$request" $status $body_bytes_sent '
@@ -140,10 +122,10 @@ http {
   server_tokens off;
 
   proxy_http_version 1.1;
-  proxy_buffering off;
   proxy_set_header Host $host;
   proxy_set_header Upgrade $http_upgrade;
   proxy_set_header Connection $connection_upgrade;
+  proxy_set_header Early-Data $ssl_early_data;
   proxy_set_header X-Real-IP $remote_addr;
   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
   proxy_set_header X-Forwarded-Proto $proxy_x_forwarded_proto;
@@ -173,6 +155,8 @@ http {
     include cf-certs/nginx-server.conf;
 
     server_name ${NGINX_SERVER_HOMEASSISTANT};
+
+    proxy_buffering off;
 
     location / {
       proxy_pass http://homeassistant-upstream/;
@@ -210,7 +194,9 @@ http {
   server {
     include le-certs/nginx-server.conf;
 
-    server_name homeassistant.${NGINX_SERVER_LOCAL_DOMAIN};
+    server_name homeassistant.${NGINX_SERVER_LOCAL_DOMAIN} ${NGINX_SERVER_HOMEASSISTANT};
+
+    proxy_buffering off;
 
     location / {
       proxy_pass http://homeassistant-upstream/;
@@ -262,6 +248,8 @@ http {
 
     server_name zigbee2mqtt.${NGINX_SERVER_LOCAL_DOMAIN};
 
+    proxy_buffering off;
+
     location / {
       proxy_pass http://zigbee2mqtt-upstream/;
     }
@@ -281,6 +269,8 @@ http {
     include le-certs/nginx-server.conf;
 
     server_name fluidd.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    client_max_body_size 0;
 
     location / {
       proxy_pass http://fluidd-upstream/;
@@ -309,6 +299,8 @@ http {
 
     server_name ender3v2.${NGINX_SERVER_LOCAL_DOMAIN};
 
+    client_max_body_size 0;
+
     location / {
       proxy_pass http://ender3v2-apiserver-upstream/;
     }
@@ -332,6 +324,8 @@ http {
 
     server_name trident300.${NGINX_SERVER_LOCAL_DOMAIN};
 
+    client_max_body_size 0;
+
     location / {
       proxy_pass http://trident300-apiserver-upstream/;
     }
@@ -354,6 +348,8 @@ http {
     include le-certs/nginx-server.conf;
 
     server_name mainsail.${NGINX_SERVER_LOCAL_DOMAIN};
+
+    client_max_body_size 0;
 
     location / {
       proxy_pass http://mainsail-upstream/;
@@ -411,8 +407,6 @@ http {
     include le-certs/nginx-server.conf;
 
     server_name jackett.${NGINX_SERVER_LOCAL_DOMAIN};
-
-    proxy_set_header X-Forwarded-Host $http_host;
 
     location / {
       proxy_pass http://jackett-upstream/;
