@@ -21,9 +21,15 @@ http {
     '' $server_port;
   }
 
+  # Empty, not "close", so upstream keepalive works.
   map $http_upgrade $connection_upgrade {
     default upgrade;
-    '' close;
+    '' "";
+  }
+
+  # Here, not in the include: only /etc/nginx/templates is envsubst-expanded.
+  map $host $csp_frame_ancestors {
+    default "frame-ancestors 'self' https://*.${NGINX_SERVER_LOCAL_DOMAIN};";
   }
 
   map $scheme $proxy_x_forwarded_ssl {
@@ -33,66 +39,91 @@ http {
 
   upstream adguardhome-upstream {
     server adguardhome;
+    keepalive 8;
+  }
+  upstream dozzle-upstream {
+    server dozzle:8080;
+    keepalive 8;
   }
   upstream homeassistant-upstream {
     server homeassistant:8123;
+    keepalive 8;
   }
   upstream grafana-upstream {
     server grafana:3000;
+    keepalive 8;
   }
   upstream portainer-upstream {
     server portainer:9000;
+    keepalive 8;
   }
   upstream esphome-upstream {
     server esphome:6052;
+    keepalive 8;
   }
   upstream vscode-upstream {
     server vscode:8080;
+    keepalive 8;
   }
   upstream zigbee2mqtt-upstream {
     server zigbee2mqtt:8080;
+    keepalive 8;
   }
   upstream spoolman-upstream {
     server spoolman:8000;
+    keepalive 8;
   }
   upstream fluidd-upstream {
     server fluidd;
+    keepalive 8;
   }
   upstream mainsail-upstream {
     server mainsail;
+    keepalive 8;
   }
   upstream ender3v2-apiserver-upstream {
     server ${NGINX_ENDER3V2_UPSTREAM}:7125;
+    keepalive 8;
   }
   upstream ender3v2-streamer-upstream {
     server ${NGINX_ENDER3V2_UPSTREAM}:8080;
+    keepalive 8;
   }
   upstream trident300-apiserver-upstream {
     server ${NGINX_TRIDENT300_UPSTREAM}:7125;
+    keepalive 8;
   }
   upstream trident300-streamer-upstream {
     server ${NGINX_TRIDENT300_UPSTREAM}:8080;
+    keepalive 8;
   }
   upstream ultrafeeder-upstream {
     server ultrafeeder:80;
+    keepalive 8;
   }
   upstream flightradar24-upstream {
     server flightradar24:8754;
+    keepalive 8;
   }
   upstream transmission-upstream {
     server wireguard:9091;
+    keepalive 8;
   }
   upstream jackett-upstream {
     server wireguard:9117;
+    keepalive 8;
   }
   upstream sonarr-upstream {
     server wireguard:8989;
+    keepalive 8;
   }
   upstream radarr-upstream {
     server wireguard:7878;
+    keepalive 8;
   }
   upstream seerr-upstream {
     server wireguard:5055;
+    keepalive 8;
   }
 
   sendfile on;
@@ -125,7 +156,6 @@ http {
   proxy_set_header Host $host;
   proxy_set_header Upgrade $http_upgrade;
   proxy_set_header Connection $connection_upgrade;
-  proxy_set_header Early-Data $ssl_early_data;
   proxy_set_header X-Real-IP $remote_addr;
   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
   proxy_set_header X-Forwarded-Proto $proxy_x_forwarded_proto;
@@ -271,6 +301,7 @@ http {
     server_name fluidd.${NGINX_SERVER_LOCAL_DOMAIN};
 
     client_max_body_size 0;
+    proxy_request_buffering off;
 
     location / {
       proxy_pass http://fluidd-upstream/;
@@ -300,6 +331,7 @@ http {
     server_name ender3v2.${NGINX_SERVER_LOCAL_DOMAIN};
 
     client_max_body_size 0;
+    proxy_request_buffering off;
 
     location / {
       proxy_pass http://ender3v2-apiserver-upstream/;
@@ -325,6 +357,7 @@ http {
     server_name trident300.${NGINX_SERVER_LOCAL_DOMAIN};
 
     client_max_body_size 0;
+    proxy_request_buffering off;
 
     location / {
       proxy_pass http://trident300-apiserver-upstream/;
@@ -350,6 +383,7 @@ http {
     server_name mainsail.${NGINX_SERVER_LOCAL_DOMAIN};
 
     client_max_body_size 0;
+    proxy_request_buffering off;
 
     location / {
       proxy_pass http://mainsail-upstream/;
