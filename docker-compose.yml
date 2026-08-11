@@ -400,6 +400,8 @@ services:
       - "./spoolman/data:/home/app/.local/share/spoolman"
     env_file:
       - ./common.env
+      - ./spoolman/secrets.env
+    dns: 10.0.0.3
 
   wireguard:
     image: linuxserver/wireguard
