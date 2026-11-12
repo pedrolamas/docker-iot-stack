@@ -52,6 +52,12 @@ Zigbee2Mqtt allows you to use your Zigbee devices without the vendors bridge or 
 
 * Image: [koenkk/zigbee2mqtt](https://hub.docker.com/r/koenkk/zigbee2mqtt)
 
+### Matter(.js) Server
+
+The Open Home Foundation Matter Server serves as the foundation to provide Matter support to Home Assistant but its universal approach makes it suitable to be used in other projects too.
+
+* Image [ghcr.io/matter-js/matterjs-server](https://github.com/orgs/matter-js/packages/container/package/matterjs-server)
+
 ### Telegraf
 
 Telegraf is an agent for collecting metrics and writing them to InfluxDB or other outputs.

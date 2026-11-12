@@ -80,8 +80,15 @@ services:
 
   homeassistant:
     depends_on:
-      - mariadb
-      - mosquitto
+      mariadb:
+        condition: service_started
+        restart: false
+      mosquitto:
+        condition: service_started
+        restart: false
+      matter-server:
+        condition: service_started
+        restart: false
     image: ghcr.io/home-assistant/home-assistant
     restart: unless-stopped
     network_mode: host
@@ -95,6 +102,20 @@ services:
     environment:
       - PYTHONWARNINGS=ignore:Unverified HTTPS request
     privileged: true
+    dns: 10.0.0.3
+
+  matter-server:
+    depends_on:
+      adguardhome:
+        condition: service_started
+        restart: false
+    image: ghcr.io/matter-js/matterjs-server
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - "./matter-server/data:/data"
+    env_file:
+      - ./common.env
     dns: 10.0.0.3
 
   mosquitto:
@@ -169,7 +190,7 @@ services:
       adguardhome:
         condition: service_started
         restart: false
-    image: mariadb
+    image: mariadb:lts
     restart: unless-stopped
     networks:
       backbone:
