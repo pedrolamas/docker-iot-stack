@@ -17,6 +17,7 @@ advanced:
   log_level: warning
   log_output:
     - console
+  last_seen: ISO_8601
 frontend:
   enabled: true
   port: 8080
@@ -30,7 +31,7 @@ devices:
     friendly_name: Living Room Climate
   '0x000d6ffffec24c99':
     friendly_name: Kids Corner Smart Plug
-  '0x00158d0002e20b09':
+  '0xa4c1389ef4b69ea8':
     friendly_name: Back Door
   '0x00158d0002bfc3fd':
     friendly_name: Front Door
@@ -113,4 +114,4 @@ groups:
     friendly_name: Sewing Corner Group
   '3':
     friendly_name: Kids Beds Group
-version: 4
+version: 5
